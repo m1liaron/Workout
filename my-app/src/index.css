@@ -3,3 +3,6 @@ body{
     font: italic small-caps bold 16px/2 cursive;
     background: rgba(90, 53, 253, 0.306);
 }
+ul, li{
+    list-style: none;
+}

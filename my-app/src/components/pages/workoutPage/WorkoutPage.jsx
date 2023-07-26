@@ -1,21 +1,29 @@
-import { Link } from "react-router-dom";
+import WorkoutList from "../../workoutList/WorkoutList";
+
+const penDiv = {
+    position: 'fixed',
+    bottom: '-4px',
+    right: '10px'
+}
 
 const pen = {
-  color: '#0f67ff',
-  position: 'fixed',
-  bottom: '20px',
-  right: '0px',
-  padding: '2rem',
-  backgroundColor: "white",
-  borderRadius: '100px'
+  backgroundColor: '#31B0D5',
+  color: 'white',
+  padding: '20px',
+  borderRadius: '100%',
+  borderColor: '#46b8da',
+  cursor: 'pointer'
 }
 
 const WorkoutPage = () => {
     return (
-        <div>
-            {/* <Link to='/workout/exercise'>Exersice</Link> */}
-            <i style={pen} class="fa-solid fa-pen fa-2xl"></i>
-        </div>
+        <>
+            <h1>Workout</h1>
+            <WorkoutList />
+            <div style={penDiv}>
+                <i style={pen} class="fa-solid fa-pen fa-2xl"></i>
+            </div>
+        </>
     )
 }
 
