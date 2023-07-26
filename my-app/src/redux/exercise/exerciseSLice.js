@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    exercise: []
+    exercise: [],
 }
 
 const exerciseSlice = createSlice({
@@ -13,6 +13,7 @@ const exerciseSlice = createSlice({
         },
         removeExercise(state, action) {
             state.exercise = state.exercise.filter(item => item.id !== action.payload);
+            state.sets = state.sets.filter(item => item.id !== action.payload);
         }
     }
 })

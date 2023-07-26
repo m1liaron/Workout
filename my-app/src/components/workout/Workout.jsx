@@ -1,17 +1,17 @@
 import { removeWorkout } from '../../redux/workout/workoutSlice';
 import { useDispatch } from 'react-redux'; 
-import { LI } from './Workout.styled';
-import { Link } from "react-router-dom";
+import { LINK } from './Workout.styled';
 
 const Workout = ({ name, id }) => {
     const dispatch = useDispatch();
 
     return (
-        <>
-            <LI>{name}</LI>
-            <Link to={`/workout/exercise/${id}`}>Exercise</Link>
-            <button onClick={() => dispatch(removeWorkout(id))}>Remove</button>
-        </>
+        <div style={{display: 'flex'}}>
+        <LINK to={`/workout/exercise/${id}`} style={{textDecoration: 'none'}}>
+            <p>{name}</p>
+        </LINK>
+        <button onClick={() => dispatch(removeWorkout(id))}>Remove</button>
+        </div>
     )
 }
 

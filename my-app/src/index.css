@@ -6,3 +6,6 @@ body{
 ul, li{
     list-style: none;
 }
+.fa-solid{
+    cursor: pointer;
+}

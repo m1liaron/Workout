@@ -1,12 +1,16 @@
 import styled from "@emotion/styled";
+import { Link } from "react-router-dom";
 
-export const LI = styled.li`
+export const LINK = styled(Link)`
     display:flex;
-    flex-direction: column;
+    justify-content:space-between;
     flex-wrap: wrap;
     padding:40px;
     width:100%;
     height:auto;
-    border-radius: 40px;
-    background:#fff;    
+    border-radius: 10px;
+    background:#fff;
+    &:hover{
+        background:#C0C0C0;
+    }
 `;

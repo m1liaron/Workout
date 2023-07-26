@@ -1,29 +1,44 @@
 import WorkoutList from "../../workoutList/WorkoutList";
+// import { useState } from "react";
 
-const penDiv = {
-    position: 'fixed',
-    bottom: '-4px',
-    right: '10px'
-}
+// const penDiv = {
+//     position: 'fixed',
+//     bottom: '20px',
+//     right: '5px'
+// }
 
-const pen = {
-  backgroundColor: '#31B0D5',
-  color: 'white',
-  padding: '20px',
-  borderRadius: '100%',
-  borderColor: '#46b8da',
-  cursor: 'pointer'
-}
+// const addWorkout = {
+//     position: 'fixed',
+//     bottom: '150px',
+// }
+
+// const pen = {
+//     backgroundColor: 'rgb(75, 104, 197)',
+//     color: 'white',
+//     padding: '20px',
+//     borderRadius: '20px',
+//     cursor: 'pointer',
+//     border: 'none'
+// }
 
 const WorkoutPage = () => {
+    // const [visible, setVisible] = useState(false);
+
     return (
-        <>
+        <div style={{padding: '20px'}}>
             <h1>Workout</h1>
             <WorkoutList />
-            <div style={penDiv}>
-                <i style={pen} class="fa-solid fa-pen fa-2xl"></i>
-            </div>
-        </>
+            {/* <div style={addWorkout}>
+                <div style={penDiv}>
+                    <button onClick={() => setVisible(!visible)} style={pen}>+ Новий</button>
+                </div>
+            {visible ? 
+                <div>
+                    <input style={{background: 'rgb(75, 104, 197)', color: '#ffff'}} className="form-control" type="text" />
+                </div> : false
+            }
+            </div> */}
+        </div>
     )
 }
 

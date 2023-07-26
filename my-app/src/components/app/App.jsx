@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { HomePage, WorkoutExercisePage, WorkoutPage } from '../pages';
+import { HomePage, WorkoutExercisePage, WorkoutPage, NotFoundPage } from '../pages';
 import NavBar from '../navbar/NavBar';
 
 function App() {
@@ -15,6 +15,7 @@ function App() {
             <Route path='/' element={<HomePage/>} />
             <Route path='/workout' element={<WorkoutPage/>} />
             <Route path='/workout/exercise/:workoutId' element={<WorkoutExercisePage/>} />
+            <Route path='*' element={<NotFoundPage/>} />
           </Routes>
         </Router>
       </div>
