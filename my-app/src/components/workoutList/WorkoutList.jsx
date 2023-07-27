@@ -12,7 +12,7 @@ const WorkoutList = () => {
 
   const handleAddWorkout = () => {
     const newWorkout = {
-      name: value === '' ? 'New training' : value,
+      name: value === '' ? 'Нове тренування' : value,
       id: uuidv4()
     };
 
@@ -24,7 +24,7 @@ const WorkoutList = () => {
     <>
       <input
         type="text"
-        placeholder='name'
+        placeholder="ім'я"
         value={value}
         onChange={(e) => setValue(e.target.value)}
         style={{marginBottom: '20px'}}
@@ -33,7 +33,7 @@ const WorkoutList = () => {
       <button
         onClick={handleAddWorkout}
         className="btn btn-primary"
-     >Add workout</button>
+     >Додати тренування</button>
       <UL
         className="list-group"
       >

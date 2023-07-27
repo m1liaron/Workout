@@ -53,10 +53,22 @@ const Exercise = ({ name, id, start, change}) => {
     }
 
     const handleAddSets = () => {
-        const newSet = { id: uuidv4(), repetitions: value };
+        const newSet = { setId: uuidv4(), repetitions: value }; // Generate a new UUID for the set
         setSetsList([...setsList, newSet]);
+        dispatch(addSets({ setId: newSet.setId, repetitions: value }));
         setRep(rep + 1);
-    };
+      };
+
+    const handleRemoveLastSet = () => {
+        if (setsList.length > 1) {
+          const lastSetId = setsList[setsList.length - 1].id;
+
+          dispatch(removeSets(lastSetId));
+    
+          setSetsList(setsList.slice(0, setsList.length - 1));
+          setRep(rep - 1);
+        }
+      };
 
     return (
         <div style={{background: '#fff', padding: '10px'}}>
@@ -83,8 +95,9 @@ const Exercise = ({ name, id, start, change}) => {
                </div>
             </div>
             { activeMode ? 
-                <div style={{ width: '100px', height: '80px', background: 'rgb(211 211 211)', borderRadius: '10px' }}>
-                    <button onClick={() => dispatch(removeExercise(id))} className="btn btn-primary">Remove</button>
+                <div style={{position: 'absolute', width: '100px', height: '150px', background: '#fff', borderRadius: '10px', right: '60px'}}>
+                    <button onClick={() => dispatch(removeExercise(id))} className="btn btn-primary">Видалити вправу</button>
+                    <button onClick={handleRemoveLastSet} className="btn btn-primary">Видалити підхід</button>
                 </div>
                 : null
             }
@@ -92,7 +105,7 @@ const Exercise = ({ name, id, start, change}) => {
         </div>
             { change && visSet ? 
                 <div>
-<ul>
+                    <ul>
                         {setsList.map((set) => (
                             <li key={set.id} style={{
                                 display: 'flex',

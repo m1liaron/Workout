@@ -26,7 +26,7 @@ const WorkoutPage = () => {
 
     return (
         <div style={{padding: '20px'}}>
-            <h1>Workout</h1>
+            <h1>Тренування</h1>
             <WorkoutList />
             {/* <div style={addWorkout}>
                 <div style={penDiv}>

@@ -3,19 +3,21 @@ import { NavLink } from "react-router-dom";
 
 const NavBar = () => {
     const txt = {
+        position: 'relative',
         color: '#180D91',
         textDecoration: 'none',
         fontSize: '1.5rem',
-        width: '100px',
-        height: 'auto',
+        width: '130px',
         borderRadius: '100%',
-        background: 'rgb(126 115 255)'
+        background: 'rgb(75, 104, 197)',
+        border:'1px solid #000',
+        top:'-50px'
     }
 
     return (
         <div style={{
             position: 'fixed',
-            bottom: '0px',
+            bottom: '-62px',
             right: '0',
             width: '100%',
             background: '#4B68C5',
@@ -31,15 +33,15 @@ const NavBar = () => {
                 Home
             </NavLink> */}
             <NavLink
-                style={({ isActive }) => ({ ...txt, color: isActive ? '#ffff' : txt.color })}
+                style={({ isActive }) => ({ ...txt, color: isActive ? '#ffff' : txt.color, borderColor: isActive ? '#fff' : null })}
                 to='/workout'>
-                Workout
-                <i className="fa-solid fa-person" style={{color: '#005eff'}}></i>
+                Тренування
+                <i className="fa-solid fa-person"></i>
             </NavLink>
             <NavLink
-                style={({ isActive }) => ({ ...txt, color: isActive ? '#ffff' : txt.color })}
+                style={({ isActive }) => ({ ...txt, color: isActive ? '#ffff' : txt.color, borderColor: isActive ? '#fff' : null })}
                 to='/statistic'>
-                Statistic
+                Статистика
                 <i class="fa-solid fa-chart-line" ></i>
             </NavLink>
         </div>

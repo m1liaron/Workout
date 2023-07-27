@@ -1,6 +1,7 @@
 body{
     margin: 0;
     font: italic small-caps bold 16px/2 cursive;
+    font-family: system-ui;
     background: rgba(90, 53, 253, 0.306);
 }
 ul, li{

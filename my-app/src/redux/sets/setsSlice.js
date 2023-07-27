@@ -12,8 +12,9 @@ const setsSlice = createSlice({
             state.sets = [...state.sets, action.payload];
         },
         removeSets(state, action) {
-            state.sets = state.sets.filter(item => item.id !== action.payload);
-        }
+            const setIdToRemove = action.payload;
+            state.sets = state.sets.filter(item => item.id !== setIdToRemove);
+          }
     }
 })
 

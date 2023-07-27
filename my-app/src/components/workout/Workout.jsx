@@ -10,7 +10,7 @@ const Workout = ({ name, id }) => {
         <LINK to={`/workout/exercise/${id}`} style={{textDecoration: 'none'}}>
             <p>{name}</p>
         </LINK>
-        <button onClick={() => dispatch(removeWorkout(id))}>Remove</button>
+        <button className='btn btn-primary' onClick={() => dispatch(removeWorkout(id))}>Видалити</button>
         </div>
     )
 }
