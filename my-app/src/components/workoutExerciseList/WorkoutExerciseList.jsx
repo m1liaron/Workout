@@ -6,8 +6,8 @@ import Exercise from '../exercise/Exercise';
 
 const fixedDiv = {
     position: 'fixed',
-    bottom: '20px',
-    right: '20%'
+    bottom: '122px',
+    right: '21%'
 }
 
 const WorkoutExerciseList = ({ workoutId}) => {
@@ -17,7 +17,7 @@ const WorkoutExerciseList = ({ workoutId}) => {
   const [change, setChange] = useState(false);
   const dispatch = useDispatch();
 
-  const handleAddExercise = () => {
+  const handleAddExercise = (e) => {
     const newExercise = {
       name: value === '' ? 'New training' : value,
       id: uuidv4(),
@@ -35,7 +35,7 @@ const WorkoutExerciseList = ({ workoutId}) => {
     <div style={{display: 'flex', marginBottom:'10px'}}>
         <input
       type="text"
-      placeholder='name'
+      placeholder="ім'я"
       value={value}
       onChange={(e) => setValue(e.target.value)}
       className="form-control"
@@ -44,7 +44,7 @@ const WorkoutExerciseList = ({ workoutId}) => {
         onClick={handleAddExercise}
         className="btn btn-primary"
       >
-        Add exercise
+        Додати тренування
       </button>
     </div>
     <div>

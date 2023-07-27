@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { HomePage, WorkoutExercisePage, WorkoutPage, NotFoundPage } from '../pages';
+import { HomePage, WorkoutExercisePage, WorkoutPage, StatisticPage, NotFoundPage } from '../pages';
 import NavBar from '../navbar/NavBar';
 
 function App() {
@@ -10,13 +10,14 @@ function App() {
         justifyContent: 'center',
     }}>
         <Router>
-          <NavBar/>
           <Routes>
             <Route path='/' element={<HomePage/>} />
             <Route path='/workout' element={<WorkoutPage/>} />
             <Route path='/workout/exercise/:workoutId' element={<WorkoutExercisePage/>} />
+            <Route path='/statistic' element={<StatisticPage/>} />
             <Route path='*' element={<NotFoundPage/>} />
           </Routes>
+          <NavBar/>
         </Router>
       </div>
     </div>
