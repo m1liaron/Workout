@@ -13,7 +13,6 @@ const setsSlice = createSlice({
         },
         removeSets(state, action) {
             state.sets = state.sets.filter(item => item.id !== action.payload);
-            state.sets = state.sets.filter(item => item.id !== action.payload);
         }
     }
 })

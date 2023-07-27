@@ -1,7 +1,6 @@
 import { removeExercise } from "../../redux/exercise/exerciseSlice";
 import { addSets, removeSets, selectSets } from "../../redux/sets/setsSlice";
 import { useDispatch, useSelector } from 'react-redux'; 
-import Push from '../../assets/img/push.jpg';
 import { useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -14,6 +13,7 @@ const editModeDiv = {
 const Exercise = ({ name, id, start, change}) => {
     const dispatch = useDispatch();
     const sets = useSelector(selectSets);
+    const [rep, setRep] = useState(1);
     const [selectedImage, setSelectedImage] = useState(null); // State to hold the selected image file
     const [activeMode, setActiveMode] = useState(false);
     const [visSet, setVisSet] = useState(false);
@@ -55,6 +55,7 @@ const Exercise = ({ name, id, start, change}) => {
     const handleAddSets = () => {
         const newSet = { id: uuidv4(), repetitions: value };
         setSetsList([...setsList, newSet]);
+        setRep(rep + 1);
     };
 
     return (
@@ -68,18 +69,17 @@ const Exercise = ({ name, id, start, change}) => {
             borderRadius: '10px'
         }}>
             <div style={editModeDiv}>
-                <div>
-                    {/* {renderImage()} */}
-                    {/* <input type="file" onChange={handleImageChange} /> */}
+                <div style={{display: 'flex', alignItems: 'center'}}>
                         {change ?
-                            <i className="fa-solid fa-arrow-up" style={{transition: '0.5s'}} onClick={showSets}></i>
+                            <i className="fa-solid fa-arrow-up" style={{transition: '0.5s', marginRight: '10px'}} onClick={showSets}></i>
                             : null
                         }
-                    <img style={{ width: '70px', marginRight: '5px' }} src={Push} alt="" />
+                    {renderImage()}
+                    {/* <input type="file" onChange={handleImageChange} /> */}
                 </div>
                 <div>
                     <h1>{name}</h1>
-                     <p>1 повт. по 10 раз.</p>
+                     <p>{rep} повт. по 10 раз.</p>
                </div>
             </div>
             { activeMode ? 
@@ -101,9 +101,10 @@ const Exercise = ({ name, id, start, change}) => {
                                 borderRadius: '20px',
                                 alignItems: 'center',
                                 textAlign: 'center',
-                                padding: '5px'
+                                padding: '5px',
+                                marginBottom: '10px'
                             }}>
-                                <p>1</p>
+                                <p>{setsList.indexOf(set) + 1}</p>
                                 <div style={{display: 'flex'}}>
                                     <input
                                         style={{
@@ -116,7 +117,7 @@ const Exercise = ({ name, id, start, change}) => {
                                             marginRight: '10px'
                                         }}
                                         type="number"
-                                        value={set.repetitions}
+                                        value={value}
                                         onChange={(e) => setValue(e.target.value)}
                                     />
                                     <p>повт.</p>
