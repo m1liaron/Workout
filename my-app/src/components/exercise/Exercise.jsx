@@ -21,12 +21,12 @@ const Exercise = ({ name, id, start, change}) => {
 
     const [setsList, setSetsList] = useState([{ id: uuidv4(), repetitions: '10' }]);
 
-    const handleImageChange = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            setSelectedImage(URL.createObjectURL(file)); // Set the selected image URL
-        }
-    };
+    // const handleImageChange = (event) => {
+    //     const file = event.target.files[0];
+    //     if (file) {
+    //         setSelectedImage(URL.createObjectURL(file)); // Set the selected image URL
+    //     }
+    // };
 
     const renderImage = () => {
         if (selectedImage) {
@@ -86,6 +86,11 @@ const Exercise = ({ name, id, start, change}) => {
                             <i className="fa-solid fa-arrow-up" style={{transition: '0.5s', marginRight: '10px'}} onClick={showSets}></i>
                             : null
                         }
+                        {start ? 
+                        <i className="fa-solid fa-arrow-down" style={{transition: '0.5s', marginRight: '10px'}} onClick={showSets}></i>
+                        : 
+                        null
+                        }
                     {renderImage()}
                     {/* <input type="file" onChange={handleImageChange} /> */}
                 </div>
@@ -103,7 +108,7 @@ const Exercise = ({ name, id, start, change}) => {
             }
             <button style={{border:'none'}} onClick={() => setActiveMode(!activeMode)}>...</button>
         </div>
-            { change && visSet ? 
+            { change && visSet || start && !visSet? 
                 <div>
                     <ul>
                         {setsList.map((set) => (

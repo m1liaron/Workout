@@ -17,7 +17,7 @@ function App() {
             <Route path='/statistic' element={<StatisticPage/>} />
             <Route path='*' element={<NotFoundPage/>} />
           </Routes>
-          <NavBar/>
+          {!WorkoutExercisePage && <NavBar />}
         </Router>
       </div>
     </div>
