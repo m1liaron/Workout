@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import { addExercise, selectExercise } from '../../redux/exercise/exerciseSlice';
 import Exercise from '../exercise/Exercise';
+import Stopwatch from '../stopwatch/Stopwatch';
 
 const fixedDiv = {
     position: 'fixed',
@@ -11,6 +12,7 @@ const fixedDiv = {
 }
 
 const WorkoutExerciseList = ({ workoutId}) => {
+  const [isRunning, setIsRunning] = useState(false);
   const exercises = useSelector(selectExercise);
   const [value, setValue] = useState('');
   const [start, setStart] = useState(false);
@@ -31,22 +33,21 @@ const WorkoutExerciseList = ({ workoutId}) => {
 
   return (
     <div style={{ padding: '10px' }}>
+      {start ? <Stopwatch start={start}/> : null}
       {change ?<p>режим розробки</p> : null}
+    {!start ? 
     <div style={{display: 'flex', marginBottom:'10px'}}>
-        <input
-      type="text"
-      placeholder="ім'я"
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
-      className="form-control"
-      />
-      <button
-        onClick={handleAddExercise}
-        className="btn btn-primary"
-      >
-        Додати тренування
-      </button>
-    </div>
+      <input
+        type="text"
+        placeholder="ім'я"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        className="form-control"
+    />
+    <button onClick={handleAddExercise} className="btn btn-primary">Додати тренування</button>
+    </div> 
+    : null
+    }
     <div>
       <ul>
         {exercises.length === 0 ? (
@@ -61,16 +62,19 @@ const WorkoutExerciseList = ({ workoutId}) => {
                   key={exercise.id}
                   id={exercise.id}
                   name={exercise.name}
-                  star={start}
+                  start={start}
                   change={change}
                   className="my-3"
                 />
             ))
         )}
       </ul>
-          <div style={fixedDiv}>
-            <button onClick={() => setStart(!start)} className="btn btn-primary">Почати</button>
+          <div style={{...fixedDiv, right: start ? '30%' : '21%', bottom: start ? '12px' : '126px'}}>
+            <button onClick={() => setStart(true)} className="btn btn-primary">{start ? 'Закінчити' : 'Почати'}</button>
+            {!start ? 
             <button onClick={() => setChange(!change)} className="btn btn-secondary" style={{marginLeft: '10px'}}>Редагувати</button>
+              : null
+          }
           </div>
       </div>
       </div>
