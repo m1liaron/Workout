@@ -1,8 +1,16 @@
 import React, { useState, useEffect } from "react";
 
-const Stopwatch = ({ start }) => {
+const container = {
+  width: '100%',
+  background: '#0d6efd',
+  color: '#FFFFFF',
+  padding: '10px',
+  marginBottom: '10px',
+  fontSize: '2rem'
+}
+
+const Stopwatch = ({ start, elapsedTime, setElapsedTime }) => {
   const [isRunning, setIsRunning] = useState(false);
-  const [elapsedTime, setElapsedTime] = useState(0);
 
   useEffect(() => {
     let interval;
@@ -32,7 +40,7 @@ const Stopwatch = ({ start }) => {
   };
 
   return (
-    <div>
+    <div style={container}>
         <span>{formatTime(elapsedTime)}</span>
     </div>
   );

@@ -34,7 +34,7 @@ const NavBar = () => {
             </NavLink> */}
             <NavLink
                 style={({ isActive }) => ({ ...txt, color: isActive ? '#ffff' : txt.color, borderColor: isActive ? '#fff' : null })}
-                to='/workout'>
+                to='/'>
                 Тренування
                 <i className="fa-solid fa-person"></i>
             </NavLink>
@@ -42,7 +42,7 @@ const NavBar = () => {
                 style={({ isActive }) => ({ ...txt, color: isActive ? '#ffff' : txt.color, borderColor: isActive ? '#fff' : null })}
                 to='/statistic'>
                 Статистика
-                <i class="fa-solid fa-chart-line" ></i>
+                <i className="fa-solid fa-chart-line" ></i>
             </NavLink>
         </div>
     )

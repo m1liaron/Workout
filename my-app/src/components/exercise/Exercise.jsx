@@ -1,8 +1,9 @@
 import { removeExercise } from "../../redux/exercise/exerciseSlice";
-import { addSets, removeSets, selectSets } from "../../redux/sets/setsSlice";
+import { addSets, removeSets, selectSets, updateSets } from "../../redux/sets/setsSlice";
 import { useDispatch, useSelector } from 'react-redux'; 
 import { useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
+import './Exercise.css'
 
 const editModeDiv = {
     display: 'flex',
@@ -10,15 +11,22 @@ const editModeDiv = {
     justifyContent: 'center'
 }
 
+const tick = {
+    width: '40px',
+    height: '40px',
+    borderRadius: '100%',
+    background: '#e4e4e4'
+}
+
 const Exercise = ({ name, id, start, change}) => {
     const dispatch = useDispatch();
     const sets = useSelector(selectSets);
+
     const [rep, setRep] = useState(1);
     const [selectedImage, setSelectedImage] = useState(null); // State to hold the selected image file
     const [activeMode, setActiveMode] = useState(false);
     const [visSet, setVisSet] = useState(false);
     const [value, setValue] = useState('10');
-
     const [setsList, setSetsList] = useState([{ id: uuidv4(), repetitions: '10' }]);
 
     // const handleImageChange = (event) => {
@@ -53,9 +61,10 @@ const Exercise = ({ name, id, start, change}) => {
     }
 
     const handleAddSets = () => {
-        const newSet = { setId: uuidv4(), repetitions: value }; // Generate a new UUID for the set
+        const newSet = { setId: uuidv4(), repetitions: value };
         setSetsList([...setsList, newSet]);
-        dispatch(addSets({ setId: newSet.setId, repetitions: value }));
+        dispatch(addSets({ setId: newSet.setId, repetitions: value, checked: false }));
+
         setRep(rep + 1);
       };
 
@@ -68,10 +77,23 @@ const Exercise = ({ name, id, start, change}) => {
           setSetsList(setsList.slice(0, setsList.length - 1));
           setRep(rep - 1);
         }
-      };
+    };
+    
+    const handleCheckboxChange = (setId) => {
+        const updatedSets = setsList.map((set) =>
+        set.setId === setId ? { ...set, checked: !set.checked } : set
+        );
+
+        setSetsList(updatedSets);
+
+        const setIndex = sets.findIndex((set) => set.setId === setId);
+        if (setIndex !== -1) {
+        dispatch(updateSets({ setId, checked: updatedSets[setIndex].checked }));
+        }
+    };
 
     return (
-        <div style={{background: '#fff', padding: '10px'}}>
+        <div style={{background: '#ffff', padding: '10px'}}>
         <div style={{
             display: 'flex',
             justifyContent: 'space-between',
@@ -96,7 +118,7 @@ const Exercise = ({ name, id, start, change}) => {
                 </div>
                 <div>
                     <h1>{name}</h1>
-                     <p>{rep} повт. по 10 раз.</p>
+                    <p>{rep} повт. по {value} раз</p>
                </div>
             </div>
             { activeMode ? 
@@ -115,13 +137,18 @@ const Exercise = ({ name, id, start, change}) => {
                             <li key={set.id} style={{
                                 display: 'flex',
                                 justifyContent: 'space-around',
-                                background: 'rgb(211 211 211)',
+                                background:  'rgb(212 212 212)',
                                 borderRadius: '20px',
                                 alignItems: 'center',
                                 textAlign: 'center',
                                 padding: '5px',
                                 marginBottom: '10px'
                             }}>
+                                {start ? 
+                                    <input type="checkbox" checked={set.checked} onChange={() => handleCheckboxChange(set.setId)}/>
+                                    : null
+                                }
+
                                 <p>{setsList.indexOf(set) + 1}</p>
                                 <div style={{display: 'flex'}}>
                                     <input

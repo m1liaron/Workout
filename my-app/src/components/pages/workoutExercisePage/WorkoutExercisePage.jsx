@@ -1,13 +1,12 @@
 import { useParams } from 'react-router-dom';
 import WorkoutExerciseList from '../../workoutExerciseList/WorkoutExerciseList';
 
-const WorkoutExercisePage = () => {
+const WorkoutExercisePage = ({setShowBar}) => {
   const { workoutId } = useParams();
 
   return (
     <>
-      <h1>Exercise</h1>
-      <WorkoutExerciseList workoutId={workoutId} />
+      <WorkoutExerciseList key={workoutId} workoutId={workoutId} setShowBar={setShowBar} />
     </>
   );
 };

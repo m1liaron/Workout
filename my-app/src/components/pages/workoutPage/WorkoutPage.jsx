@@ -27,7 +27,7 @@ const WorkoutPage = () => {
     return (
         <div style={{padding: '20px'}}>
             <h1>Тренування</h1>
-            <WorkoutList />
+            <WorkoutList  />
             {/* <div style={addWorkout}>
                 <div style={penDiv}>
                     <button onClick={() => setVisible(!visible)} style={pen}>+ Новий</button>

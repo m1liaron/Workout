@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { addExercise, selectExercise } from '../../redux/exercise/exerciseSlice';
 import Exercise from '../exercise/Exercise';
 import Stopwatch from '../stopwatch/Stopwatch';
+import FinishWorkout from '../finishWorkout/FinishWorkout';
 
 const fixedDiv = {
     position: 'fixed',
@@ -11,12 +12,14 @@ const fixedDiv = {
     right: '21%'
 }
 
-const WorkoutExerciseList = ({ workoutId}) => {
+const WorkoutExerciseList = ({ workoutId, setShowBar}) => {
   const [isRunning, setIsRunning] = useState(false);
   const exercises = useSelector(selectExercise);
   const [value, setValue] = useState('');
+  const [elapsedTime, setElapsedTime] = useState(0);
   const [start, setStart] = useState(false);
   const [change, setChange] = useState(false);
+  const [showFinished, setShowFinished] = useState(false);
   const dispatch = useDispatch();
 
   const handleAddExercise = (e) => {
@@ -31,12 +34,27 @@ const WorkoutExerciseList = ({ workoutId}) => {
     setValue('');
   };
 
+  const startWorkout = () => {
+    if (exercises.length !== 0) {
+      setStart(true)
+      setShowBar(false);
+    } else {
+      return;
+    }
+  }
+
+  const finishWorkout = () => {
+    setShowFinished(true);
+    setShowBar(true)
+  }
+
   return (
-    <div style={{ padding: '10px' }}>
-      {start ? <Stopwatch start={start}/> : null}
+    <>
+    <div>
+        {start && !showFinished ? <Stopwatch start={start} elapsedTime={elapsedTime} setElapsedTime={setElapsedTime} /> : null}
       {change ?<p>режим розробки</p> : null}
     {!start ? 
-    <div style={{display: 'flex', marginBottom:'10px'}}>
+    <div style={{display: 'flex', marginBottom:'10px', padding: '10px'}}>
       <input
         type="text"
         placeholder="ім'я"
@@ -44,14 +62,15 @@ const WorkoutExerciseList = ({ workoutId}) => {
         onChange={(e) => setValue(e.target.value)}
         className="form-control"
     />
-    <button onClick={handleAddExercise} className="btn btn-primary">Додати тренування</button>
+    <button onClick={handleAddExercise} className="btn btn-primary">Додати вправу</button>
     </div> 
     : null
     }
-    <div>
+      <div>
+          {!showFinished ? 
       <ul>
         {exercises.length === 0 ? (
-          <h1 className="text-center">Нема поки що тренуваннь</h1>
+          <h1 className="text-center">Нема поки що вправ</h1>
         ) : (
           exercises
             .filter(exercise => {
@@ -68,9 +87,9 @@ const WorkoutExerciseList = ({ workoutId}) => {
                 />
             ))
         )}
-      </ul>
+      </ul>: null}
           <div style={{...fixedDiv, right: start ? '30%' : '21%', bottom: start ? '12px' : '126px'}}>
-            <button onClick={() => setStart(true)} className="btn btn-primary">{start ? 'Закінчити' : 'Почати'}</button>
+            <button onClick={!start ? startWorkout : finishWorkout} className="btn btn-primary">{start ? 'Закінчити' : 'Почати'}</button>
             {!start ? 
             <button onClick={() => setChange(!change)} className="btn btn-secondary" style={{marginLeft: '10px'}}>Редагувати</button>
               : null
@@ -78,6 +97,12 @@ const WorkoutExerciseList = ({ workoutId}) => {
           </div>
       </div>
       </div>
+      <div>
+        {showFinished ? 
+          <FinishWorkout time={elapsedTime} /> : null
+        }
+      </div>
+    </>
   );
 }
 
