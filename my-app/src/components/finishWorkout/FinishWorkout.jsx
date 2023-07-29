@@ -1,14 +1,32 @@
 import './FinishWorkout.css'
 import StrongMan from '../../assets/img/strong_men.png'
+import { Link } from "react-router-dom";
 
 const FinishWorkout = ({ time }) => {
 
   const formatTime = (time) => {
-    const hours = Math.floor(time / 3600000);
-    const minutes = Math.floor((time % 3600000) / 60000);
-    const seconds = Math.floor((time % 60000) / 1000);
+      const hours = Math.floor(time / 3600000);
+      const minutes = Math.floor((time % 3600000) / 60000);
+      const seconds = Math.floor((time % 60000) / 1000);
 
-    return `${hours.toString().padStart(2)} годин${minutes.toString().padStart(2)} хвилини ${seconds.toString().padStart(2, "0")}`;
+      const timeUnits = [];
+
+      if (hours > 0) {
+        const hoursSuffix = hours > 1 && hours < 5 ? 'години' : 'година';
+        timeUnits.push(`${hours.toString().padStart(2)} ${hoursSuffix}`);
+      }
+
+      if (minutes > 0) {
+        const minuteSuffix = minutes > 1 && minutes < 5 ? 'хвилини' : 'хвилина';
+        timeUnits.push(`${minutes.toString().padStart(2)} ${minuteSuffix}`);
+      }
+
+      if (seconds > 0) {
+        const secondSuffix = seconds > 1 && seconds < 5 ? 'секунди' : 'секунд';
+        timeUnits.push(`${seconds.toString().padStart(2, "0")} ${secondSuffix}`);
+      }
+
+      return timeUnits.join(' ');
   };
 
   return (
@@ -43,6 +61,9 @@ const FinishWorkout = ({ time }) => {
             Ви займались {formatTime(time)}
           </h4>
         </div>
+          <Link to='/statistic'>
+            Повернутись
+          </Link>
       </div>
     </>
   )

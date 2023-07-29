@@ -45,7 +45,6 @@ const WorkoutExerciseList = ({ workoutId, setShowBar}) => {
 
   const finishWorkout = () => {
     setShowFinished(true);
-    setShowBar(true)
   }
 
   return (
@@ -89,7 +88,7 @@ const WorkoutExerciseList = ({ workoutId, setShowBar}) => {
         )}
       </ul>: null}
           <div style={{...fixedDiv, right: start ? '30%' : '21%', bottom: start ? '12px' : '126px'}}>
-            <button onClick={!start ? startWorkout : finishWorkout} className="btn btn-primary">{start ? 'Закінчити' : 'Почати'}</button>
+            {!showFinished ? <button onClick={!start ? startWorkout : finishWorkout} className="btn btn-primary">{start ? 'Закінчити' : 'Почати'}</button> : null}
             {!start ? 
             <button onClick={() => setChange(!change)} className="btn btn-secondary" style={{marginLeft: '10px'}}>Редагувати</button>
               : null

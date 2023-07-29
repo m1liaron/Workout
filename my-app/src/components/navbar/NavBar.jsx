@@ -6,12 +6,14 @@ const NavBar = () => {
         position: 'relative',
         color: '#180D91',
         textDecoration: 'none',
-        fontSize: '1.5rem',
-        width: '130px',
+        width: '110px',
+        fontSize: '1rem',
         borderRadius: '100%',
         background: 'rgb(75, 104, 197)',
         border:'1px solid #000',
-        top:'-50px'
+        top: '-50px',
+        height: '80px',
+        padding: '10px'
     }
 
     return (
@@ -21,11 +23,12 @@ const NavBar = () => {
             right: '0',
             width: '100%',
             background: '#4B68C5',
-            padding: '20px',
+            padding: '5px',
             display: 'flex',
             gap: '20px',
             textAlign: 'center',
             justifyContent: 'center',
+            height: '103px'
         }}>
             {/* <NavLink
                 style={({ isActive }) => ({ ...txt, color: isActive ? '#ffff' : txt.color })}

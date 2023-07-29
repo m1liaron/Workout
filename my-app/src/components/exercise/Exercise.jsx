@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import './Exercise.css'
+import Modal from "../modal/Modal";
 
 const editModeDiv = {
     display: 'flex',
@@ -27,6 +28,7 @@ const Exercise = ({ name, id, start, change}) => {
     const [activeMode, setActiveMode] = useState(false);
     const [visSet, setVisSet] = useState(false);
     const [value, setValue] = useState('10');
+    const [modalShow, setModalShow] = useState(false);
     const [setsList, setSetsList] = useState([{ id: uuidv4(), repetitions: '10' }]);
 
     // const handleImageChange = (event) => {
@@ -128,7 +130,7 @@ const Exercise = ({ name, id, start, change}) => {
                 </div>
                 : null
             }
-            <button style={{border:'none'}} onClick={() => setActiveMode(!activeMode)}>...</button>
+            {change ? <button style={{border:'none'}} onClick={() => setActiveMode(!activeMode)}>...</button> : null}
         </div>
             { change && visSet || start && !visSet? 
                 <div>
@@ -145,7 +147,7 @@ const Exercise = ({ name, id, start, change}) => {
                                 marginBottom: '10px'
                             }}>
                                 {start ? 
-                                    <input type="checkbox" checked={set.checked} onChange={() => handleCheckboxChange(set.setId)}/>
+                                    <input type="checkbox" checked={set.checked} onChange={() => handleCheckboxChange(set.setId)} onClick={() => setModalShow(true)}/>
                                     : null
                                 }
 
@@ -173,6 +175,7 @@ const Exercise = ({ name, id, start, change}) => {
                     </ul>
                 </div> : null
             }
+            <Modal showModal={modalShow} closeModal={() => setModalShow(false)}/>
         </div>
     )
 }
