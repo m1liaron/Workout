@@ -1,8 +1,13 @@
 import './FinishWorkout.css'
 import StrongMan from '../../assets/img/strong_men.png'
 import { Link } from "react-router-dom";
+import { useEffect } from 'react';
 
-const FinishWorkout = ({ time }) => {
+const FinishWorkout = ({ time, setShowBar }) => {
+
+  useEffect(() => {
+    setShowBar(true);
+  })
 
   const formatTime = (time) => {
       const hours = Math.floor(time / 3600000);

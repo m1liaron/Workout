@@ -1,19 +1,32 @@
 import React, { useState, useEffect } from 'react';
+import Move from '../../assets/sounds/Move.mp3';
+import Clock from '../../assets/sounds/clock.mp3';
+import useSound from 'use-sound';
 
-const Timer = () => {
-  const [seconds, setSeconds] = useState(60);
+const Timer = ({ showModal, seconds, setSeconds }) => {
+  const [play, { stop }] = useSound(Clock, { volume: 0.1 });
+  const [playMove] = useSound(Move, { volume: 0.1 });
+  const [isClockPlaying, setIsClockPlaying] = useState(false);
 
   useEffect(() => {
-    // Function to update the timer every second
     const interval = setInterval(() => {
       setSeconds((prevSeconds) => prevSeconds - 1);
     }, 1000);
 
-    // Clean up the interval when the component is unmounted
     return () => clearInterval(interval);
-  }, []); // Empty dependency array ensures the effect runs only once on mount
+  }, []);
 
-  // Function to format the time in mm:ss format
+  useEffect(() => {
+      if (seconds < 4 && !isClockPlaying) {
+        play();
+        setIsClockPlaying(true);
+      } else if (seconds <= 0 && isClockPlaying && showModal) {
+        playMove();
+        stop();
+        setIsClockPlaying(false);
+      }
+    }, [seconds, isClockPlaying, play, stop, playMove]);  
+
   const formatTime = (totalSeconds) => {
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
@@ -23,7 +36,6 @@ const Timer = () => {
 
   return (
     <div className="timer">
-      <h1>Timer</h1>
       <div className="time-display">{formatTime(seconds)}</div>
     </div>
   );

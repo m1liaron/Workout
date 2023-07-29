@@ -1,4 +1,3 @@
-/* CSS for the modal overlay */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -6,25 +5,24 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    /* Semi-transparent background */
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* CSS for the modal content */
 .modal-content {
     max-width: 400px;
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    animation: modal 0.5s;
+    animation-iteration-count: 1;
+    transition: 3.5s;
 }
 
-/* CSS for the close button */
 .close-button {
     background-color: #f44336;
-    /* Red color for the close button */
     color: #fff;
     border: none;
     padding: 8px 16px;
@@ -34,14 +32,49 @@
     margin-bottom: 10px;
 }
 
-/* CSS for the modal body */
 .modal-body {
-    /* Add any additional styling you need for the modal body content */
 }
 
-/* Optionally, you can add some media query to make the modal responsive on smaller screens */
+.timer{
+    font-size: 3rem;
+}
+
+.modal-open {
+    overflow: hidden;
+}
+
+.modal-left {
+    animation: modal-left 0.5s;
+    animation-iteration-count: 1;
+    transition: 3.5s;
+}
+
 @media (max-width: 600px) {
     .modal-content {
         max-width: 90%;
+    }
+}
+
+@keyframes modal-left {
+    from {
+        transform: translateY(0px);
+        filter: blur(0px);
+    }
+
+    to {
+        transform: translateY(300px);
+        filter: blur(5px);
+    }
+}
+
+@keyframes modal {
+    from {
+        transform: translateY(300px);
+        filter: blur(5px);
+    }
+
+    to {
+        transform: translateY(0px);
+        filter: blur(0px);
     }
 }

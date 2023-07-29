@@ -81,18 +81,18 @@ const Exercise = ({ name, id, start, change}) => {
         }
     };
     
-    const handleCheckboxChange = (setId) => {
-        const updatedSets = setsList.map((set) =>
-        set.setId === setId ? { ...set, checked: !set.checked } : set
-        );
+    // const handleCheckboxChange = (setId) => {
+    //     const updatedSets = setsList.map((set) =>
+    //     set.setId === setId ? { ...set, checked: !set.checked } : set
+    //     );
 
-        setSetsList(updatedSets);
+    //     setSetsList(updatedSets);
 
-        const setIndex = sets.findIndex((set) => set.setId === setId);
-        if (setIndex !== -1) {
-        dispatch(updateSets({ setId, checked: updatedSets[setIndex].checked }));
-        }
-    };
+    //     const setIndex = sets.findIndex((set) => set.setId === setId);
+    //     if (setIndex !== -1) {
+    //     dispatch(updateSets({ setId, checked: updatedSets[setIndex].checked }));
+    //     }
+    // };
 
     return (
         <div style={{background: '#ffff', padding: '10px'}}>
@@ -147,7 +147,7 @@ const Exercise = ({ name, id, start, change}) => {
                                 marginBottom: '10px'
                             }}>
                                 {start ? 
-                                    <input type="checkbox" checked={set.checked} onChange={() => handleCheckboxChange(set.setId)} onClick={() => setModalShow(true)}/>
+                                    <input type="checkbox" checked={set.checked} onClick={() => setModalShow(true)}/>
                                     : null
                                 }
 

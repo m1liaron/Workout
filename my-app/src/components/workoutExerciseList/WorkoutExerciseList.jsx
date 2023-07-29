@@ -98,7 +98,7 @@ const WorkoutExerciseList = ({ workoutId, setShowBar}) => {
       </div>
       <div>
         {showFinished ? 
-          <FinishWorkout time={elapsedTime} /> : null
+          <FinishWorkout time={elapsedTime} setShowBar={setShowBar} /> : null
         }
       </div>
     </>
