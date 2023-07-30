@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import { addExercise, selectExercise } from '../../redux/exercise/exerciseSlice';
+import {addStatistic, removeStatistic, selectStatic} from '../../redux/statistic/statisticSlice';
 import Exercise from '../exercise/Exercise';
 import Stopwatch from '../stopwatch/Stopwatch';
 import FinishWorkout from '../finishWorkout/FinishWorkout';
@@ -12,7 +13,7 @@ const fixedDiv = {
     right: '21%'
 }
 
-const WorkoutExerciseList = ({ workoutId, setShowBar}) => {
+const  WorkoutExerciseList = ({ workoutId, setShowBar}) => {
   const [isRunning, setIsRunning] = useState(false);
   const exercises = useSelector(selectExercise);
   const [value, setValue] = useState('');
@@ -45,6 +46,7 @@ const WorkoutExerciseList = ({ workoutId, setShowBar}) => {
 
   const finishWorkout = () => {
     setShowFinished(true);
+    dispatch(addStatistic(elapsedTime));
   }
 
   return (

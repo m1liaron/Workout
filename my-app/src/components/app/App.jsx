@@ -16,7 +16,7 @@ function App() {
           <Routes>
             <Route path='/' element={<WorkoutPage/>} />
             <Route path='/workout/exercise/:workoutId' element={<WorkoutExercisePage setShowBar={setShowBar} />} />
-            <Route path='/statistic' element={<StatisticPage/>} />
+            <Route path='/statistic' element={<StatisticPage setShowBar={setShowBar}/>} />
             <Route path='*' element={<NotFoundPage/>} />
           </Routes>
           {showBar && <NavBar />}

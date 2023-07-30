@@ -2,12 +2,15 @@ import './FinishWorkout.css'
 import StrongMan from '../../assets/img/strong_men.png'
 import { Link } from "react-router-dom";
 import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import {addStatistic, removeStatistic, selectStatic} from '../../redux/statistic/statisticSlice'
 
-const FinishWorkout = ({ time, setShowBar }) => {
-
-  useEffect(() => {
-    setShowBar(true);
-  })
+const FinishWorkout = ({ time }) => {
+  const dispatch = useDispatch();
+  
+  // useEffect(() => {
+  //   dispatch(addStatistic(time));
+  // }, [time]);
 
   const formatTime = (time) => {
       const hours = Math.floor(time / 3600000);

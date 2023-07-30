@@ -1,26 +1,50 @@
 table {
     width: 100%;
     border-collapse: collapse;
-}
-
-th,
-td {
+    border-spacing: 0;
+    margin-bottom: 1rem;
+  }
+  
+  th,
+  td {
     padding: 8px;
     text-align: center;
     border: 1px solid #ccc;
-}
-
-th {
+    border-radius: 4px;
+  }
+  
+  th {
     background-color: #f2f2f2;
-}
-
-.tracker {
+    font-weight: bold;
+  }
+  
+  .tracker {
     background-color: rgb(75, 104, 197);
     color: #ffff;
-}
-
-.active {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .active {
     background-color: #ff8800;
     color: #fff;
+    font-size: 16px;
     font-weight: bold;
-}
+    text-shadow: 0 1px 0 #fff;
+  }
+
+  button {
+    border: none;
+    background-color: #ff8800;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  

@@ -1,13 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import './Statistic.css';
-import { StyledInput } from './Statistic.styled';
+import {selectStatic} from '../../redux/statistic/statisticSlice'
+import { useSelector } from 'react-redux';
+// import { StyledInput } from './Statistic.styled';
 
-const Statistic = () => {
-const [value, setValue] = useState('');
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth();
-  const day = today.getDate();
+const Statistic = ({setShowBar}) => {
+  const timeAll = useSelector(selectStatic);
+  const [value, setValue] = useState('');
+  const [month, setMonth] = useState(new Date().getMonth());
+  const [year, setYear] = useState(new Date().getFullYear());
+  const [day, setDay] = useState(new Date().getDate());
+  const [isDisabled, setIsDisabled] = useState(false)
+
+  useEffect(() => {
+    setYear(new Date().getFullYear());
+  }, []);
+
+  useEffect(() => {
+    setShowBar(true);
+  })
 
   const firstDayOfMonth = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -16,14 +27,18 @@ const [value, setValue] = useState('');
   const table = [];
   let dayCounter = 1;
 
+  const curDate = new Date();
+  const curYear = curDate.getFullYear();
+  const curMonth = curDate.getMonth();
+
   for (let i = 0; i < weeksInMonth; i++) {
     const row = [];
 
     for (let j = 0; j < 7; j++) {
       if ((i === 0 && j < firstDayOfMonth) || dayCounter > daysInMonth) {
-        row.push(<td key={i + "-" + j} className="empty-cell"></td>);
+        row.push(<td key={i + '-' + j} className="empty-cell"></td>);
       } else {
-        const isActive = day === dayCounter; 
+        const isActive = day === dayCounter && month === curMonth && year === curYear;
         row.push(
           <td key={dayCounter} className={isActive ? 'active tracker' : 'tracker'}>
             {dayCounter}
@@ -36,36 +51,104 @@ const [value, setValue] = useState('');
     table.push(<tr key={i}>{row}</tr>);
   }
 
-  const formattedToday = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+  const handleDateChange = (e) => {
+    setValue(e.target.value);
+    const date = new Date(e.target.value);
+    setMonth(date.getMonth());
+    setYear(date.getFullYear());
+  };
+
+  const handleLeftArrowClick = () => {
+    if (month === 0) {
+      setMonth(11);
+      setYear(year - 1);
+    } else {
+      setMonth(month - 1);
+    }
+  };
 
   useEffect(() => {
-    setValue(formattedToday);
-  }, [formattedToday]);
+    setYear(new Date().getFullYear());
 
-  const handleDateChange = (e) => {
-    setValue(e.target.value); 
-    };
+    setIsDisabled(month === curMonth && year === curYear);
+  }, [month, year, curMonth, curYear]);
+
+  const handleRightArrowClick = () => {
+    if (month === 11) {
+      setMonth(0);
+      setYear(year + 1);
+    } else {
+      setMonth(month + 1);
+    }
+
+  };
+
+  const months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+  const formatTime = (time) => {
+    const hours = Math.floor(time / 3600000);
+    const minutes = Math.floor((time % 3600000) / 60000);
+    const seconds = Math.floor((time % 60000) / 1000);
+
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  };
+
+  const allTime = timeAll.reduce((a, b) => a + b, 0);
     
   return (
-      <>
-        <div style={{ padding: '30px' }}>
-            <table>
-                <thead>
-                <tr>
-                    <th style={{background: 'rgb(70 192 255)'}}>Нед</th>
-                    <th>Пон</th>
-                    <th>Вів</th>
-                    <th>Сер</th>
-                    <th>Чет</th>
-                    <th>П'я</th>
-                    <th style={{background: 'rgb(70 192 255)'}}>Суб</th>
-                </tr>
-                </thead>
-                <tbody>{table}</tbody>
-            </table>
-          </div>
-          <StyledInput type="date" value={value} onChange={handleDateChange} />
-      </>
+      <div>
+      <div style={{display: 'flex'}}>
+        <div>
+          <h3>Ви займались сьогодні:
+            <p style={{color: 'rgb(75, 104, 197)', fontWeight: 'bold'}}>{timeAll.length === 0 ? '00:00:00' : formatTime(timeAll[0])}</p>
+          </h3>
+        </div>
+        <div>
+          <h3>Ви займались усього:
+            <p style={{color: 'rgb(75, 104, 197)', fontWeight: 'bold'}}>{timeAll.length === 0 ? '00:00:00' : formatTime(allTime)}</p>
+          </h3>
+        </div>
+      </div>
+      <div style={{ padding: '30px' }}>
+        <div>{year}</div>
+        {months[month]}
+        <div style={{ display: 'flex', justifyContent: 'space-between'  }}>
+          <button onClick={handleLeftArrowClick}>
+            <i className="fa-solid fa-arrow-left"></i>
+          </button>
+          <button onClick={handleRightArrowClick} disabled={isDisabled}>
+            <i className="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th style={{ background: 'rgb(70 192 255)' }}>Нед</th>
+              <th>Пон</th>
+              <th>Вів</th>
+              <th>Сер</th>
+              <th>Чет</th>
+              <th>П'я</th>
+              <th style={{ background: 'rgb(70 192 255)' }}>Суб</th>
+            </tr>
+          </thead>
+          <tbody>{table}</tbody>
+        </table>
+      </div>
+      {/* <StyledInput type="date" value={value} onChange={handleDateChange} /> */}
+      </div>
   );
 };
 

@@ -1,11 +1,11 @@
 import Statistic from "../../statistic/Statistic";
 
-const StatisticPage = () => {
+const StatisticPage = ({setShowBar}) => {
     return (
-        <>
+        <div style={{background: '#fff'}}>
             <h1>Statistic</h1>
-            <Statistic/>
-        </>
+            <Statistic setShowBar={setShowBar}/>
+        </div>
     )
 }
 
