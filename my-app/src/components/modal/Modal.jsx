@@ -7,9 +7,9 @@ const Modal = ({ showModal, closeModal, content }) => {
 
   useEffect(() => {
     if (showModal) {
-      document.body.classList.add('modal-open'); // Add the class when the modal is shown
+      document.body.classList.add('modal-open');
     } else {
-      document.body.classList.remove('modal-open'); // Remove the class when the modal is hidden
+      document.body.classList.remove('modal-open');
     }
   }, [showModal]);
 

@@ -106,25 +106,27 @@ const Statistic = ({setShowBar}) => {
   };
 
   const allTime = timeAll.reduce((a, b) => a + b, 0);
-    
+
   return (
-      <div>
-      <div style={{display: 'flex'}}>
-        <div>
-          <h3>Ви займались сьогодні:
+    <div>
+          <h6>Ви займались
+            <p style={{color: 'rgb(75, 104, 197)', fontWeight: 'bold'}}></p>
+          </h6>
+      <div style={{display: 'flex', gap:'10px', justifyContent:'center'}}>
+        <div style={{display: 'table'}}>
+          <h6>сьогодні:
             <p style={{color: 'rgb(75, 104, 197)', fontWeight: 'bold'}}>{timeAll.length === 0 ? '00:00:00' : formatTime(timeAll[0])}</p>
-          </h3>
+          </h6>
         </div>
-        <div>
-          <h3>Ви займались усього:
+        <div style={{display: 'table'}}>
+          <h6>усього:
             <p style={{color: 'rgb(75, 104, 197)', fontWeight: 'bold'}}>{timeAll.length === 0 ? '00:00:00' : formatTime(allTime)}</p>
-          </h3>
+          </h6>
         </div>
       </div>
-      <div style={{ padding: '30px' }}>
-        <div>{year}</div>
-        {months[month]}
-        <div style={{ display: 'flex', justifyContent: 'space-between'  }}>
+      <div style={{ padding: '15px' }}>
+        <div>{months[month]} {year}</div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px'  }}>
           <button onClick={handleLeftArrowClick}>
             <i className="fa-solid fa-arrow-left"></i>
           </button>
