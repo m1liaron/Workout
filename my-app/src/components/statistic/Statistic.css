@@ -3,45 +3,45 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
     margin-bottom: 1rem;
-  }
+}
 
-  tbody{
+tbody {
     gap: 10px;
-  }
-  
-  th,
-  td {
+}
+
+th,
+td {
     padding: 8px;
     text-align: center;
     /* border: 1px solid #ccc; */
     border-radius: 4px;
     margin-right: 5px;
-  }
-  
-  th {
+}
+
+th {
     background-color: #f2f2f2;
     font-weight: bold;
     margin-right: 5px;
-  }
+}
 
-  
-  .tracker {
-    background-color: rgb(75, 104, 197);
-    color: #ffff;
+
+.tracker {
+    background-color: rgb(232, 232, 232);
+    color: #000000;
     font-size: 16px;
     font-weight: bold;
-    border-radius:100%;
-  }
-  
-  .active {
+    border-radius: 100%;
+}
+
+.active {
     background-color: #ff8800;
     color: #fff;
     font-size: 16px;
     font-weight: bold;
     text-shadow: 0 1px 0 #fff;
-  }
+}
 
-  button {
+button {
     border: none;
     background-color: #ff8800;
     color: #fff;
@@ -49,10 +49,14 @@ table {
     font-weight: bold;
     border-radius: 4px;
     cursor: pointer;
-  }
-  
-  button:disabled {
+}
+
+button:disabled {
     background-color: #ccc;
     cursor: not-allowed;
-  }
-  
+}
+
+.history-day {
+    background-color: rgb(75, 104, 197);
+    color: #fff;
+}

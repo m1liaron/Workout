@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import { addExercise, selectExercise } from '../../redux/exercise/exerciseSlice';
-import {addStatistic, removeStatistic, selectStatic} from '../../redux/statistic/statisticSlice';
+import { addHistory, selectHistory } from '../../redux/history/historySlice';
+import { selectWorkout } from '../../redux/workout/workoutSlice';
 import Exercise from '../exercise/Exercise';
 import Stopwatch from '../stopwatch/Stopwatch';
 import FinishWorkout from '../finishWorkout/FinishWorkout';
@@ -13,7 +14,8 @@ const fixedDiv = {
     right: '21%'
 }
 
-const  WorkoutExerciseList = ({ workoutId, setShowBar}) => {
+const WorkoutExerciseList = ({ workoutId, setShowBar }) => {
+  const historiya = useSelector(selectHistory);
   const [isRunning, setIsRunning] = useState(false);
   const exercises = useSelector(selectExercise);
   const [value, setValue] = useState('');
@@ -21,11 +23,15 @@ const  WorkoutExerciseList = ({ workoutId, setShowBar}) => {
   const [start, setStart] = useState(false);
   const [change, setChange] = useState(false);
   const [showFinished, setShowFinished] = useState(false);
+  const [startTime, setStartTime] = useState('');
+  const [startDay, setStartDay] = useState('');
+  const [finishTime, setFinishTime] = useState('');
+  const [count, setCount] = useState(0);
   const dispatch = useDispatch();
 
   const handleAddExercise = (e) => {
     const newExercise = {
-      name: value === '' ? 'New training' : value,
+      name: value === '' ? 'Нова вправа' : value,
       id: uuidv4(),
       workoutId: workoutId,
     };
@@ -39,6 +45,7 @@ const  WorkoutExerciseList = ({ workoutId, setShowBar}) => {
     if (exercises.length !== 0) {
       setStart(true)
       setShowBar(false);
+      setStartTime(`${new Date().getHours()}:${new Date().getMinutes()}`);
     } else {
       return;
     }
@@ -46,8 +53,27 @@ const  WorkoutExerciseList = ({ workoutId, setShowBar}) => {
 
   const finishWorkout = () => {
     setShowFinished(true);
-    dispatch(addStatistic(elapsedTime));
+
+    const historyWorkout = {
+      day: startDay,
+      time: elapsedTime,
+      startTime: startTime,
+      finishTime: finishTime,
+      id: uuidv4()
+    }
+
+    dispatch(addHistory(historyWorkout));
+    if (historiya.length <= 0) {
+      setCount(0)
+    } else {
+      setCount(count + 1);
+    }
   }
+
+  useEffect(() => {
+    setFinishTime(`${new Date().getHours()}:${new Date().getMinutes() < 10 ? '0' + new Date().getMinutes() : new Date().getMinutes()}`);
+    setStartDay(`${new Date().getDate()}.0${new Date().getMonth() + 1}`);
+  })
 
   return (
     <>
@@ -100,7 +126,7 @@ const  WorkoutExerciseList = ({ workoutId, setShowBar}) => {
       </div>
       <div>
         {showFinished ? 
-          <FinishWorkout time={elapsedTime} setShowBar={setShowBar} /> : null
+          <FinishWorkout setShowBar={setShowBar} count={count} /> : null
         }
       </div>
     </>

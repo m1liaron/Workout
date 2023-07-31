@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { HomePage, WorkoutExercisePage, WorkoutPage, StatisticPage, NotFoundPage } from '../pages';
+import { WorkoutExercisePage, WorkoutPage, StatisticPage, HistoryPage, DetailPage, NotFoundPage, } from '../pages';
 import NavBar from '../navbar/NavBar';
 import { useState } from 'react';
 
@@ -17,6 +17,8 @@ function App() {
             <Route path='/' element={<WorkoutPage/>} />
             <Route path='/workout/exercise/:workoutId' element={<WorkoutExercisePage setShowBar={setShowBar} />} />
             <Route path='/statistic' element={<StatisticPage setShowBar={setShowBar}/>} />
+            <Route path='/history' element={<HistoryPage setShowBar={setShowBar}/>} />
+            <Route path='/history/detail/:id' element={<DetailPage setShowBar={setShowBar}/>} />
             <Route path='*' element={<NotFoundPage/>} />
           </Routes>
           {showBar && <NavBar />}

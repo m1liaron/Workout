@@ -28,7 +28,7 @@ const NavBar = () => {
             gap: '20px',
             textAlign: 'center',
             justifyContent: 'center',
-            height: '103px'
+            height: '103px',
         }}>
             {/* <NavLink
                 style={({ isActive }) => ({ ...txt, color: isActive ? '#ffff' : txt.color })}

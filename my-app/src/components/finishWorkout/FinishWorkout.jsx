@@ -1,16 +1,16 @@
 import './FinishWorkout.css'
 import StrongMan from '../../assets/img/strong_men.png'
 import { Link } from "react-router-dom";
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import {addStatistic, removeStatistic, selectStatic} from '../../redux/statistic/statisticSlice'
+import { useSelector } from 'react-redux';
+import { selectHistory } from '../../redux/history/historySlice';
 
-const FinishWorkout = ({ time }) => {
-  const dispatch = useDispatch();
-  
-  // useEffect(() => {
-  //   dispatch(addStatistic(time));
-  // }, [time]);
+const FinishWorkout = ({count}) => {
+  const historiya = useSelector(selectHistory);
+
+  const time = historiya[count].time;
+  const startDay = historiya[count].day;
+  const startTime = historiya[count].startTime;
+  const finishTime = historiya[count].finishTime;
 
   const formatTime = (time) => {
       const hours = Math.floor(time / 3600000);
@@ -25,7 +25,7 @@ const FinishWorkout = ({ time }) => {
       }
 
       if (minutes > 0) {
-        const minuteSuffix = minutes > 1 && minutes < 5 ? 'хвилини' : 'хвилина';
+        const minuteSuffix = minutes > 1 && minutes < 5 ? 'хвилини' : 'хвилин';
         timeUnits.push(`${minutes.toString().padStart(2)} ${minuteSuffix}`);
       }
 
@@ -66,8 +66,12 @@ const FinishWorkout = ({ time }) => {
           }}
         >
           <h4>
-            Ви займались {formatTime(time)}
+            Тривалість:
           </h4>
+          <p>{formatTime(time)}</p>
+          <h4>Займались: </h4>
+          <p>{startDay}</p>
+          <span style={{background: 'rgb(75, 104, 197)', color: '#ffff', padding: '10px', borderRadius:'10px'}}>{startTime}-{finishTime}</span>
         </div>
           <Link to='/statistic'>
             Повернутись
