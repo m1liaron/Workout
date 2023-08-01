@@ -46,6 +46,7 @@ const WorkoutExerciseList = ({ workoutId, setShowBar }) => {
       setStart(true)
       setShowBar(false);
       setStartTime(`${new Date().getHours()}:${new Date().getMinutes()}`);
+      setChange(false);
     } else {
       return;
     }
@@ -53,12 +54,16 @@ const WorkoutExerciseList = ({ workoutId, setShowBar }) => {
 
   const finishWorkout = () => {
     setShowFinished(true);
+   const exId = exercises.map(e => {
+      return e.id
+    })
 
     const historyWorkout = {
       day: startDay,
       time: elapsedTime,
       startTime: startTime,
       finishTime: finishTime,
+      exerciseId: exId,
       id: uuidv4()
     }
 

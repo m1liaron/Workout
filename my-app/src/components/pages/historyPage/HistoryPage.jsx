@@ -24,11 +24,11 @@ const HistoryPage = ({ setShowBar }) => {
   })
 
     useEffect(() => {
-    if (historiya.length <= 0) {
-      setCount(0)
-    } else {
-      setCount(count + 1);
-    }
+      if (historiya.length <= 0) {
+        setCount(0)
+      } else {
+        setCount(count + 1);
+      }
     }, [historiya]);  
     
   const firstDayOfMonth = new Date(year, month, 1).getDay();
@@ -145,7 +145,18 @@ const HistoryPage = ({ setShowBar }) => {
                 </table>
             </div>
             <div style={{ padding: '15px', background: '#fff', marginBottom: '20px' }}>
-                {historiya.length > 0 ? <div style={{ padding: '15px', background: '#fff' }}><History time={time} day={currentDay} startTime={startTime} finishTime={finishTime} month={months[month]} /></div> : null}
+                    {historiya && historiya.map((historyEntry, index) => (
+                      <div key={index} style={{ padding: '15px'}}>
+                        <History
+                          time={formatTime(historyEntry.time)}
+                          day={historyEntry.day}
+                          startTime={historyEntry.startTime}
+                          finishTime={historyEntry.finishTime}
+                          month={months[month]}
+                          count={count}
+                        />
+                      </div>
+                    ))}
             </div>
         </>
     )

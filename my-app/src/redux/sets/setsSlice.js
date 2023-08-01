@@ -1,7 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    sets: [{setId: '3be9f46e-b029-41d8-8741-357400f8e77f', repetitions: '10', checked: false}]
+    sets: [{
+        setId: '3be9f46e-b029-41d8-8741-357400f8e77f', repetitions: '10', checked: false
+    }]
 }
 
 const setsSlice = createSlice({
@@ -11,9 +13,9 @@ const setsSlice = createSlice({
         addSets(state, action) {
             state.sets = [...state.sets, action.payload];
         },
-        removeSets(state, action) {
+        removeSet(state, action) {
             const setIdToRemove = action.payload;
-            state.sets = state.sets.filter(item => item.id !== setIdToRemove);
+            state.sets = state.sets.filter(item => item.setId !== setIdToRemove);
         },
         updateSets: (state, action) => {
             const { setId, checked } = action.payload;
@@ -25,7 +27,7 @@ const setsSlice = createSlice({
     }
 })
 
-export const { addSets, removeSets, updateSets } = setsSlice.actions;
+export const { addSets, removeSet, updateSets } = setsSlice.actions;
 
 export const selectSets = (state) => state.sets.sets;
 

@@ -137,18 +137,11 @@ const Statistic = ({ setShowBar }) => {
           </Link>
             {/* <StyledInput type="date" value={value} onChange={handleDateChange} /> */}
             <h1>Історія</h1>
-          {historiya && historiya.map((historyEntry, index) => (
-        <div key={index} style={{ padding: '15px'}}>
+        <div style={{ padding: '15px'}}>
           <History
-            time={formatTime(historyEntry.time)}
-            day={historyEntry.day}
-            startTime={historyEntry.startTime}
-            finishTime={historyEntry.finishTime}
             month={months[month]}
-            count={count}
           />
         </div>
-          ))}
     </div>
   );
 };

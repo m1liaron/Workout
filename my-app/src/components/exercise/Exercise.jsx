@@ -1,5 +1,5 @@
 import { removeExercise } from "../../redux/exercise/exerciseSlice";
-import { addSets, removeSets, selectSets, updateSets } from "../../redux/sets/setsSlice";
+import { addSets, removeSet, selectSets, updateSets } from "../../redux/sets/setsSlice";
 import { useDispatch, useSelector } from 'react-redux'; 
 import { useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
@@ -10,13 +10,6 @@ const editModeDiv = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'
-}
-
-const tick = {
-    width: '40px',
-    height: '40px',
-    borderRadius: '100%',
-    background: '#e4e4e4'
 }
 
 const Exercise = ({ name, id, start, change}) => {
@@ -71,28 +64,25 @@ const Exercise = ({ name, id, start, change}) => {
       };
 
     const handleRemoveLastSet = () => {
-        if (setsList.length > 1) {
-          const lastSetId = setsList[setsList.length - 1].id;
-
-          dispatch(removeSets(lastSetId));
-    
-          setSetsList(setsList.slice(0, setsList.length - 1));
-          setRep(rep - 1);
+        if (sets.length > 1) {
+            const lastSetId = sets[sets.length - 1].setId;
+            dispatch(removeSet(lastSetId));
         }
     };
     
-    // const handleCheckboxChange = (setId) => {
-    //     const updatedSets = setsList.map((set) =>
-    //     set.setId === setId ? { ...set, checked: !set.checked } : set
-    //     );
+    
+    const handleCheckboxChange = (setId) => {
+        const updatedSets = sets.map((set) =>
+            set.setId === setId ? { ...set, checked: !set.checked } : set
+        );
 
-    //     setSetsList(updatedSets);
+        setSetsList(updatedSets);
 
-    //     const setIndex = sets.findIndex((set) => set.setId === setId);
-    //     if (setIndex !== -1) {
-    //     dispatch(updateSets({ setId, checked: updatedSets[setIndex].checked }));
-    //     }
-    // };
+        const setIndex = sets.findIndex((set) => set.setId === setId);
+        if (setIndex !== -1) {
+            dispatch(updateSets({ setId, checked: updatedSets[setIndex].checked }));
+        }
+    };
 
     return (
         <div style={{background: '#ffff', padding: '10px'}}>
@@ -111,9 +101,9 @@ const Exercise = ({ name, id, start, change}) => {
                             : null
                         }
                         {start ? 
-                        <i className="fa-solid fa-arrow-down" style={{transition: '0.5s', marginRight: '10px'}} onClick={showSets}></i>
-                        : 
-                        null
+                            <i className="fa-solid fa-arrow-down" style={{transition: '0.5s', marginRight: '10px'}} onClick={showSets}></i>
+                            : 
+                            null
                         }
                     {renderImage()}
                     {/* <input type="file" onChange={handleImageChange} /> */}
@@ -132,10 +122,10 @@ const Exercise = ({ name, id, start, change}) => {
             }
             {change ? <button style={{border:'none'}} onClick={() => setActiveMode(!activeMode)}>...</button> : null}
         </div>
-            { change && visSet || start && !visSet? 
+            { change && visSet || start && visSet? 
                 <div>
                     <ul>
-                        {setsList.map((set) => (
+                        {sets.map((set) => (
                             <li key={set.id} style={{
                                 display: 'flex',
                                 justifyContent: 'space-around',
@@ -147,11 +137,11 @@ const Exercise = ({ name, id, start, change}) => {
                                 marginBottom: '10px'
                             }}>
                                 {start ? 
-                                    <input type="checkbox" checked={set.checked} onClick={() => setModalShow(true)}/>
+                                    <input type="checkbox" checked={set.checked} onClick={() => setModalShow(true)} onChange={() => handleCheckboxChange(set.setId)}/>
                                     : null
                                 }
 
-                                <p>{setsList.indexOf(set) + 1}</p>
+                                <p>{sets.indexOf(set) + 1}</p>
                                 <div style={{display: 'flex'}}>
                                     <input
                                         style={{
