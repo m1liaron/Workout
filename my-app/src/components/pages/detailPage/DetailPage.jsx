@@ -7,6 +7,8 @@ import { selectSets } from "../../../redux/sets/setsSlice";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { formatTime } from "../../statistic/Statistic";
+import './DetailPage.css'
+import Graph from "../../graph/Grapgh";
 
 const DetailPage = () => {
     const { id } = useParams();
@@ -27,17 +29,7 @@ const DetailPage = () => {
      const handleBackButtonClick = () => {
         navigate(-1); 
     }
-    
-    // useEffect(() => {
-    //     if (history.length <= 0) {
-    //     setCount(0)
-    //     } else {
-    //     setCount(count + 1);
-    //     }
-    // }, [history]);  
 
-    // const sliceMonth = history.length > 1 ? history[count].month.slice(0, 3) : null;
-    
     return (
         <>
             <h1 style={{display: 'table'}}>
@@ -46,6 +38,11 @@ const DetailPage = () => {
                 </Link>
                 Деталі
             </h1>
+            {workout
+                .filter((workout => workout.id === selectedExercises[0].workoutId))
+                .map((enty) => {
+                    <h1>{enty.name}</h1>
+                })}
                 <div style={{ textAlign: 'left' }}>
                 <div style={{ background: '#fff', marginBottom: '0', padding: '10px'}}>
                      <h1>{workoutName}</h1>
@@ -84,6 +81,7 @@ const DetailPage = () => {
                     </div>
                 ))}
             </div>
+            <Graph/>
         </>
     )
 }

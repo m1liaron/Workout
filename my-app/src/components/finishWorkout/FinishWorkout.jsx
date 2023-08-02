@@ -74,7 +74,7 @@ const FinishWorkout = ({count}) => {
           <span style={{background: 'rgb(75, 104, 197)', color: '#ffff', padding: '10px', borderRadius:'10px'}}>{startTime}-{finishTime}</span>
         </div>
           <Link to='/statistic'>
-            Повернутись
+            <button style={{marginTop: '10px'}}>Повернутись</button>
           </Link>
       </div>
     </>

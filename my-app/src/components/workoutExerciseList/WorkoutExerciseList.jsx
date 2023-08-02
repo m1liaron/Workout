@@ -7,6 +7,7 @@ import { selectWorkout } from '../../redux/workout/workoutSlice';
 import Exercise from '../exercise/Exercise';
 import Stopwatch from '../stopwatch/Stopwatch';
 import FinishWorkout from '../finishWorkout/FinishWorkout';
+import { Link } from 'react-router-dom';
 
 const fixedDiv = {
     position: 'fixed',
@@ -16,7 +17,6 @@ const fixedDiv = {
 
 const WorkoutExerciseList = ({ workoutId, setShowBar }) => {
   const historiya = useSelector(selectHistory);
-  const [isRunning, setIsRunning] = useState(false);
   const exercises = useSelector(selectExercise);
   const [value, setValue] = useState('');
   const [elapsedTime, setElapsedTime] = useState(0);
@@ -33,7 +33,7 @@ const WorkoutExerciseList = ({ workoutId, setShowBar }) => {
     const newExercise = {
       name: value === '' ? 'Нова вправа' : value,
       id: uuidv4(),
-      workoutId: workoutId,
+      workoutId: workoutId,  //! Я це поки залишив
     };
 
     dispatch(addExercise(newExercise));
@@ -129,7 +129,7 @@ const WorkoutExerciseList = ({ workoutId, setShowBar }) => {
           </div>
       </div>
       </div>
-      <div>
+      <div style={{background: '#fff'}}>
         {showFinished ? 
           <FinishWorkout setShowBar={setShowBar} count={count} /> : null
         }

@@ -43,11 +43,11 @@ th {
 
 button {
     border: none;
-    background-color: #ff8800;
+    background-color: rgb(75, 104, 197);
     color: #fff;
     font-size: 16px;
     font-weight: bold;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
 }
 
