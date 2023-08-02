@@ -24,7 +24,7 @@ const Statistic = ({ setShowBar }) => {
   })
 
     useEffect(() => {
-    if (historiya.length <= 1) {
+    if (historiya.length <= 0) {
       setCount(0)
     } else {
       setCount(count + 1);
@@ -95,27 +95,11 @@ const Statistic = ({ setShowBar }) => {
 
 //   const allTime = timeAll.reduce((a, b) => a + b, 0);
     
-  const time = historiya.length === 0 ? '00:00:00' : formatTime(historiya[count].time);
-    
+  const time = historiya.length === 0 ? '00:00:00' : formatTime(historiya[historiya.length - 1].time);
+  const allTime = historiya.map(item => item.time).reduce((a, b) => a + b, 0);
+
   return (
     <div style={{ marginBottom: '120px' }}>
-      <div style={{ background: '#fff', marginBottom: '20px'}}>
-        <h6>Ви займались
-            <p style={{color: 'rgb(75, 104, 197)', fontWeight: 'bold'}}></p>
-        </h6>
-        <div style={{display: 'flex', gap:'10px', justifyContent:'center'}}>
-        <div style={{display: 'table'}}>
-            <h6>сьогодні:
-            <p style={{color: 'rgb(75, 104, 197)', fontWeight: 'bold'}}>{time}</p>
-            </h6>
-        </div>
-        <div style={{display: 'table'}}>
-            {/* <h6>усього:
-            <p style={{color: 'rgb(75, 104, 197)', fontWeight: 'bold'}}>{historiya.length === 0 ? '00:00:00' : formatTime(historiya[0].time)}</p>
-            </h6> */}
-        </div>
-        </div>
-      </div>
           <Link to='/history' style={{textDecoration: 'none'}}>
             <div style={{ padding: '15px', background: '#fff', marginBottom: '20px' }}>
                 <div>{months[month]} {year}</div>
@@ -132,7 +116,17 @@ const Statistic = ({ setShowBar }) => {
                     </tr>
                 </thead>
                 <tbody>{table}</tbody>
-                </table>
+          </table>
+          <div style={{display: 'flex', justifyContent: 'space-around'}}>
+            <div style={{ display: 'table' }}>
+              <h1>сьогодні</h1>
+              <p>{time}</p>
+          </div>
+          <div style={{display: 'table'}}>
+            <h1>усього:</h1>
+              <p>{historiya.length === 0 ? '00:00:00' : formatTime(allTime)}</p>
+          </div>
+          </div>
             </div>
           </Link>
             {/* <StyledInput type="date" value={value} onChange={handleDateChange} /> */}

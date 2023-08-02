@@ -1,7 +1,7 @@
 import { removeExercise } from "../../redux/exercise/exerciseSlice";
 import { addSets, removeSet, selectSets, updateSets } from "../../redux/sets/setsSlice";
 import { useDispatch, useSelector } from 'react-redux'; 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import './Exercise.css'
 import Modal from "../modal/Modal";
@@ -15,6 +15,7 @@ const editModeDiv = {
 const Exercise = ({ name, id, start, change}) => {
     const dispatch = useDispatch();
     const sets = useSelector(selectSets);
+    const filteredSets = sets.filter((set) => set.exId === id);
 
     const [rep, setRep] = useState(1);
     const [selectedImage, setSelectedImage] = useState(null); // State to hold the selected image file
@@ -22,7 +23,7 @@ const Exercise = ({ name, id, start, change}) => {
     const [visSet, setVisSet] = useState(false);
     const [value, setValue] = useState('10');
     const [modalShow, setModalShow] = useState(false);
-    const [setsList, setSetsList] = useState([{ id: uuidv4(), repetitions: '10' }]);
+    const defaultRep = sets.find((set) => set.exId === id)?.repetitions || '10';
 
     // const handleImageChange = (event) => {
     //     const file = event.target.files[0];
@@ -30,6 +31,11 @@ const Exercise = ({ name, id, start, change}) => {
     //         setSelectedImage(URL.createObjectURL(file)); // Set the selected image URL
     //     }
     // };
+
+    if (filteredSets.length === 0) {
+        const defaultSet = { exId: id, setId: uuidv4(), repetitions: '10', checked: false };
+        dispatch(addSets(defaultSet));
+    }
 
     const renderImage = () => {
         if (selectedImage) {
@@ -57,26 +63,23 @@ const Exercise = ({ name, id, start, change}) => {
 
     const handleAddSets = () => {
         const newSet = { setId: uuidv4(), repetitions: value };
-        setSetsList([...setsList, newSet]);
-        dispatch(addSets({ setId: newSet.setId, repetitions: value, checked: false }));
+        dispatch(addSets({ exId: id,setId: newSet.setId, repetitions: value, checked: false }));
 
         setRep(rep + 1);
       };
 
-    const handleRemoveLastSet = () => {
-        if (sets.length > 1) {
-            const lastSetId = sets[sets.length - 1].setId;
-            dispatch(removeSet(lastSetId));
-        }
-    };
-    
+        const handleRemoveLastSet = () => {
+            if (filteredSets.length > 1) {
+                const lastSetId = filteredSets[filteredSets.length - 1].setId;
+                dispatch(removeSet(lastSetId));
+                setRep(rep - 1);
+            }
+        };
     
     const handleCheckboxChange = (setId) => {
         const updatedSets = sets.map((set) =>
             set.setId === setId ? { ...set, checked: !set.checked } : set
         );
-
-        setSetsList(updatedSets);
 
         const setIndex = sets.findIndex((set) => set.setId === setId);
         if (setIndex !== -1) {
@@ -125,7 +128,7 @@ const Exercise = ({ name, id, start, change}) => {
             { change && visSet || start && visSet? 
                 <div>
                     <ul>
-                        {sets.map((set) => (
+                        {filteredSets.map((set, index) => (
                             <li key={set.id} style={{
                                 display: 'flex',
                                 justifyContent: 'space-around',
@@ -141,7 +144,7 @@ const Exercise = ({ name, id, start, change}) => {
                                     : null
                                 }
 
-                                <p>{sets.indexOf(set) + 1}</p>
+                                <p>{index + 1}</p>
                                 <div style={{display: 'flex'}}>
                                     <input
                                         style={{

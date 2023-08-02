@@ -7,7 +7,6 @@ import { formatTime } from "../../statistic/Statistic";
 
 const HistoryPage = ({ setShowBar }) => {
   const historiya = useSelector(selectHistory);
-  const timeAll = '100';
   const [value, setValue] = useState('');
   const [month, setMonth] = useState(new Date().getMonth());
   const [year, setYear] = useState(new Date().getFullYear());
@@ -15,6 +14,8 @@ const HistoryPage = ({ setShowBar }) => {
   const [isDisabled, setIsDisabled] = useState(false);
   const [count, setCount] = useState(0);
     
+  // console.log(historiya[historiya.length - 1].time)
+
   useEffect(() => {
     setYear(new Date().getFullYear());
   }, []);
@@ -106,12 +107,7 @@ const HistoryPage = ({ setShowBar }) => {
     setShowBar(false);
   });
 
-  const time = historiya.length === 0 ? '00:00:00' : formatTime(historiya[count].time);
-  const currentDay = historiya.length === 0 ? '00:00:00' : historiya[count].day
-  const startTime = historiya.length === 0 ? '00:00:00' : historiya[count].startTime
-  const finishTime = historiya.length === 0 ? '00:00:00' : historiya[count].finishTime
-  
-    return (
+  return (
         <>
             <h1 style={{display: 'table'}}>
                 <Link to='/statistic'>
@@ -141,22 +137,14 @@ const HistoryPage = ({ setShowBar }) => {
                     <th style={{ background: 'rgb(70 192 255)', color: '#fff' }}>С</th>
                     </tr>
                 </thead>
-                <tbody>{table}</tbody>
-                </table>
+          <tbody>{table}</tbody>
+        </table>
+        
             </div>
-            <div style={{ padding: '15px', background: '#fff', marginBottom: '20px' }}>
-                    {historiya && historiya.map((historyEntry, index) => (
-                      <div key={index} style={{ padding: '15px'}}>
+            <div style={{ background: '#fff', marginBottom: '20px' }}>
                         <History
-                          time={formatTime(historyEntry.time)}
-                          day={historyEntry.day}
-                          startTime={historyEntry.startTime}
-                          finishTime={historyEntry.finishTime}
                           month={months[month]}
-                          count={count}
                         />
-                      </div>
-                    ))}
             </div>
         </>
     )

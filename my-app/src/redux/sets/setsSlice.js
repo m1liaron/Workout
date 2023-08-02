@@ -1,9 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    sets: [{
-        setId: '3be9f46e-b029-41d8-8741-357400f8e77f', repetitions: '10', checked: false
-    }]
+    sets: []
 }
 
 const setsSlice = createSlice({
