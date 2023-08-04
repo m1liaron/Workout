@@ -14,7 +14,7 @@ function App() {
     }}>
         <Router>
           <Routes>
-            <Route path='/' element={<WorkoutPage/>} />
+            <Route path='/' element={<WorkoutPage setShowBar={setShowBar}/>} />
             <Route path='/workout/exercise/:workoutId' element={<WorkoutExercisePage setShowBar={setShowBar} />} />
             <Route path='/statistic' element={<StatisticPage setShowBar={setShowBar}/>} />
             <Route path='/history' element={<HistoryPage setShowBar={setShowBar}/>} />

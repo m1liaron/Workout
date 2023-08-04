@@ -17,16 +17,12 @@ const Exercise = ({ name, id, start, change}) => {
     const sets = useSelector(selectSets);
     const filteredSets = sets.filter((set) => set.exId === id);
 
-    const [rep, setRep] = useState(1);
-    const [selectedImage, setSelectedImage] = useState(null); // State to hold the selected image file
+    const [rep, setRep] = useState(filteredSets.length);
+    const [selectedImage, setSelectedImage] = useState(null);
     const [activeMode, setActiveMode] = useState(false);
     const [visSet, setVisSet] = useState(false);
     const [value, setValue] = useState('10');
     const [modalShow, setModalShow] = useState(false);
-    const [modalShown, setModalShown] = useState(false);
-    const [checkedOnce, setCheckedOnce] = useState(false);
-
-    const [checked, setChecked] = useState(sets.map(set => set.checked));
 
     // const handleImageChange = (event) => {
     //     const file = event.target.files[0];
@@ -35,6 +31,15 @@ const Exercise = ({ name, id, start, change}) => {
     //     }
     // };
 
+    useEffect(() => {
+        if (start) {
+            const updatedSets = sets.map(set => ({ ...set, checked: false }));
+            updatedSets.forEach(updatedSet => dispatch(updateSets(updatedSet)));
+        } else {
+            return;
+        }
+    }, [start]);
+    
     if (filteredSets.length === 0) {
         const defaultSet = { exId: id, setId: uuidv4(), repetitions: '10', checked: false };
         dispatch(addSets(defaultSet));
@@ -67,7 +72,6 @@ const Exercise = ({ name, id, start, change}) => {
     const handleAddSets = () => {
         const newSet = {exId: id,setId: uuidv4(), repetitions: value, checked: false };
         dispatch(addSets(newSet));
-
         setRep(rep + 1);
       };
 
@@ -81,38 +85,37 @@ const Exercise = ({ name, id, start, change}) => {
                     setRep(rep);
                 }
             }
-        };
+    };
     
-        const handleCheckboxChange = (setId) => {
-            if (checkedOnce) {
-              return;
-            }
-        
-            const updatedSets = sets.map((set) =>
-              set.setId === setId ? { ...set, checked: true } : set
-            );
-        
-            const setIndex = sets.findIndex((set) => set.setId === setId);
-            if (setIndex !== -1) {
-              dispatch(updateSets({ setId, checked: updatedSets[setIndex].checked }));
-            }
-            setCheckedOnce(true);
-        
-            if (!modalShown) {
-              setModalShown(true);
-              setModalShow(true);
-            }
-          };
+    
+
+const handleCheckboxChange = (setId, checked) => {
+    const updatedSets = sets.map((set) =>
+      set.setId === setId ? { ...set, checked: true } : set
+    );
+
+    const setIndex = sets.findIndex((set) => set.setId === setId);
+    if (setIndex !== -1) {
+      dispatch(updateSets({ setId, checked: updatedSets[setIndex].checked }));
+    }
+
+    if (!checked) {
+        setModalShow(true);
+    } else {
+        setModalShow(false);
+    }
+  };
 
     return (
-        <div style={{background: '#ffff', padding: '10px'}}>
+        <div style={{background: '#ffff', padding: '10px', marginBottom: '20px'}}>
         <div style={{
             display: 'flex',
             justifyContent: 'space-between',
             marginBottom: '10px',
             background: 'rgb(213 213 213)',
             padding: '10px',
-            borderRadius: '10px'
+            borderRadius: '10px',
+            alignItems: 'center'
         }}>
             <div style={editModeDiv}>
                 <div style={{display: 'flex', alignItems: 'center'}}>
@@ -134,13 +137,13 @@ const Exercise = ({ name, id, start, change}) => {
                </div>
             </div>
             { activeMode ? 
-                <div style={{position: 'absolute', width: '100px', height: '150px', background: '#fff', borderRadius: '10px', right: '60px'}}>
-                    <button onClick={() => dispatch(removeExercise(id))} className="btn btn-primary">Видалити вправу</button>
-                    <button onClick={handleRemoveLastSet} className="btn btn-primary">Видалити підхід</button>
+                <div style={{position: 'absolute', width: '200px', background: '#fff', borderRadius: '10px', right: '44px'}}>
+                    <div onClick={() => dispatch(removeExercise(id))}>Видалити вправу</div>
+                    <div onClick={handleRemoveLastSet}>Видалити підхід</div>
                 </div>
                 : null
             }
-            {change || start ? <button style={{border:'none'}} onClick={() => setActiveMode(!activeMode)}>...</button> : null}
+            {change || start ? <div style={{border:'none', fontSize: '2rem'}} onClick={() => setActiveMode(!activeMode)}><i class="fa-solid fa-ellipsis-vertical"></i></div> : null}
         </div>
             { change && visSet || start && !visSet? 
                 <div>
@@ -149,8 +152,8 @@ const Exercise = ({ name, id, start, change}) => {
                             <li key={set.id} style={{
                                 display: 'flex',
                                 justifyContent: 'space-around',
-                                color: checked[index] ? '#fff' : '#000',
-                                background: checked[index] ? "green" : "rgb(212 212 212)",
+                                color: set.checked && start ? '#fff' : '#000',
+                                background: set.checked && start ? "green" : "rgb(212 212 212)",
                                 borderRadius: '20px',
                                 alignItems: 'center',
                                 textAlign: 'center',
@@ -162,7 +165,7 @@ const Exercise = ({ name, id, start, change}) => {
                                         <input
                                         type="checkbox"
                                         checked={set.checked}
-                                        onChange={() => handleCheckboxChange(set.setId)}
+                                        onChange={() => handleCheckboxChange(set.setId, set.checked)}
                                         />
                                         <span className="checkmark"></span>
                                     </label>
@@ -177,10 +180,10 @@ const Exercise = ({ name, id, start, change}) => {
                                             borderRadius: '10px',
                                             outline: 'none',
                                             border: 'none',
-                                            background: checked[index] ? "rgb(0 93 16)" : 'rgb(191 191 191)',
+                                            background: set.checked && start ? "rgb(0 93 16)" : 'rgb(191 191 191)',
                                             textAlign: 'center',
                                             marginRight: '10px',
-                                            color: checked[index] ? '#fff' : '#000'
+                                            color: set.checked && start ? '#fff' : '#000'
                                         }}
                                         type="number"
                                         value={value}

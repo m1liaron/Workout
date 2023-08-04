@@ -6,7 +6,9 @@ const container = {
   color: '#FFFFFF',
   padding: '10px',
   marginBottom: '10px',
-  fontSize: '2rem'
+  fontSize: '2rem',
+  display: 'flex',
+  alignItems: 'center',
 }
 
 const Stopwatch = ({ start, elapsedTime, setElapsedTime }) => {
@@ -41,6 +43,7 @@ const Stopwatch = ({ start, elapsedTime, setElapsedTime }) => {
 
   return (
     <div style={container}>
+        <i className="fa-solid fa-arrow-left fa-xs" style={{marginRight: '20px', marginLeft: '15px'}}></i>
         <span>{formatTime(elapsedTime)}</span>
     </div>
   );

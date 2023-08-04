@@ -17,7 +17,7 @@ const workoutsSlice = createSlice({
     }
 })
 
-export const { addWorkout, removeWorkout } = workoutsSlice.actions;
+export const { addWorkout, removeWorkout, updateWorkoutName } = workoutsSlice.actions;
 
 export const selectWorkout = (state) => state.workouts.workouts;
 

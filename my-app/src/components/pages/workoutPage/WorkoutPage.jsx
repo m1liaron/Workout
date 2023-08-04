@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import WorkoutList from "../../workoutList/WorkoutList";
 // import { useState } from "react";
 
@@ -21,13 +22,17 @@ import WorkoutList from "../../workoutList/WorkoutList";
 //     border: 'none'
 // }
 
-const WorkoutPage = () => {
+const WorkoutPage = ({setShowBar}) => {
     // const [visible, setVisible] = useState(false);
+
+    useEffect(() => {
+        setShowBar(true);
+    }, []);
 
     return (
         <div style={{padding: '20px'}}>
             <h1>Тренування</h1>
-            <WorkoutList  />
+            <WorkoutList />
             {/* <div style={addWorkout}>
                 <div style={penDiv}>
                     <button onClick={() => setVisible(!visible)} style={pen}>+ Новий</button>
