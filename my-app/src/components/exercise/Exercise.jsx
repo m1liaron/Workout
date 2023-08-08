@@ -1,8 +1,9 @@
 import { removeExercise } from "../../redux/exercise/exerciseSlice";
-import { addSets, removeSet, selectSets, updateSets } from "../../redux/sets/setsSlice";
+import { addSets, removeSet, selectSets, updateSets, updateSetTime } from "../../redux/sets/setsSlice";
 import { useDispatch, useSelector } from 'react-redux'; 
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from 'uuid';
+import { formatTime } from "../statistic/Statistic";
 import './Exercise.css'
 import Modal from "../modal/Modal";
 
@@ -23,6 +24,8 @@ const Exercise = ({ name, id, start, change}) => {
     const [visSet, setVisSet] = useState(false);
     const [value, setValue] = useState('10');
     const [modalShow, setModalShow] = useState(false);
+    const [dis, setDis] = useState(false);
+    const [duration, setDuration] = useState(0);
 
     // const handleImageChange = (event) => {
     //     const file = event.target.files[0];
@@ -41,7 +44,7 @@ const Exercise = ({ name, id, start, change}) => {
     }, [start]);
     
     if (filteredSets.length === 0) {
-        const defaultSet = { exId: id, setId: uuidv4(), repetitions: '10', checked: false };
+        const defaultSet = { exId: id, setId: uuidv4(), repetitions: '10', checked: false, duration: 0 };
         dispatch(addSets(defaultSet));
     }
 
@@ -70,7 +73,13 @@ const Exercise = ({ name, id, start, change}) => {
     }
 
     const handleAddSets = () => {
-        const newSet = {exId: id,setId: uuidv4(), repetitions: value, checked: false };
+        const newSet = {
+            exId: id,
+            setId: uuidv4(),
+            repetitions: value,
+            checked: false,
+            duration: 0
+        };
         dispatch(addSets(newSet));
         setRep(rep + 1);
       };
@@ -86,12 +95,10 @@ const Exercise = ({ name, id, start, change}) => {
                 }
             }
     };
-    
-    
 
-const handleCheckboxChange = (setId, checked) => {
+    const handleCheckboxChange = (setId, checked) => {
     const updatedSets = sets.map((set) =>
-      set.setId === setId ? { ...set, checked: true } : set
+      set.setId === setId ? { ...set, checked: !checked } : set
     );
 
     const setIndex = sets.findIndex((set) => set.setId === setId);
@@ -100,11 +107,30 @@ const handleCheckboxChange = (setId, checked) => {
     }
 
     if (!checked) {
-        setModalShow(true);
+      setModalShow(true);
+      setDis(true);
+      if (start) {
+          const startTime = Date.now();
+        const timer = setInterval(() => {
+          const elapsedTime = Math.floor((Date.now() - startTime) / 1000); // Convert to seconds
+          setDuration(elapsedTime);
+        }, 1000); 
+
+        dispatch(updateSetTime({ setId, startTime, timer }));
+      }
     } else {
-        setModalShow(false);
+      setModalShow(false);
+      setDis(true);
+      if (start && !modalShow) {
+        const set = sets.find((set) => set.setId === setId);
+        if (set && set.startTime && set.timer) {
+          clearInterval(set.timer);
+          const currentDuration = set.duration + duration;
+          dispatch(updateSets({ setId, duration: currentDuration, timer: null }));
+        }
+      }
     }
-  };
+  } ;
 
     return (
         <div style={{background: '#ffff', padding: '10px', marginBottom: '20px'}}>
@@ -144,7 +170,7 @@ const handleCheckboxChange = (setId, checked) => {
                 : null
             }
             {change || start ? <div style={{border:'none', fontSize: '2rem'}} onClick={() => setActiveMode(!activeMode)}><i class="fa-solid fa-ellipsis-vertical"></i></div> : null}
-        </div>
+            </div>
             { change && visSet || start && !visSet? 
                 <div>
                     <ul>
@@ -166,6 +192,7 @@ const handleCheckboxChange = (setId, checked) => {
                                         type="checkbox"
                                         checked={set.checked}
                                         onChange={() => handleCheckboxChange(set.setId, set.checked)}
+                                        disabled={setDis}
                                         />
                                         <span className="checkmark"></span>
                                     </label>
@@ -191,6 +218,7 @@ const handleCheckboxChange = (setId, checked) => {
                                     />
                                     <p>повт.</p>
                                 </div>
+                                {set.timer ? formatTime(set.timer) : 0}
                             </li>
                         ))}
                         <button onClick={handleAddSets} style={{width: '100%', marginTop: '10px'}} className="btn btn-primary">Add new</button>

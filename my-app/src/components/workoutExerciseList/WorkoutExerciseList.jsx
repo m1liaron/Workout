@@ -8,6 +8,7 @@ import Exercise from '../exercise/Exercise';
 import Stopwatch from '../stopwatch/Stopwatch';
 import FinishWorkout from '../finishWorkout/FinishWorkout';
 import { Link } from 'react-router-dom';
+import { selectSets } from '../../redux/sets/setsSlice';
 
 const fixedDiv = {
     position: 'fixed',
@@ -19,6 +20,7 @@ const WorkoutExerciseList = ({ workoutId, setShowBar }) => {
   const historiya = useSelector(selectHistory);
   const exercises = useSelector(selectExercise);
   const workout = useSelector(selectWorkout);
+  const sets = useSelector(selectSets);
   const [value, setValue] = useState('');
   const [elapsedTime, setElapsedTime] = useState(0);
   const [start, setStart] = useState(false);
@@ -63,8 +65,13 @@ const WorkoutExerciseList = ({ workoutId, setShowBar }) => {
   const finishWorkout = () => {
     setShowFinished(true);
    const exId = exercises.map(e => {
-      return e.id
+     return e.id;
+   })
+    const exDuration = sets.map(e => {
+      return e.timer;
     })
+    
+    console.log(exDuration)
 
     const historyWorkout = {
       day: startDay,
@@ -72,6 +79,7 @@ const WorkoutExerciseList = ({ workoutId, setShowBar }) => {
       startTime: startTime,
       finishTime: finishTime,
       exerciseId: exId,
+      duration: exDuration,
       id: uuidv4()
     }
 

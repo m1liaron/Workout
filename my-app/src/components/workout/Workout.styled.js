@@ -2,8 +2,6 @@ import styled from "@emotion/styled";
 import { Link } from "react-router-dom";
 
 export const LINK = styled(Link)`
-    display:flex;
-    justify-content:space-between;
     flex-wrap: wrap;
     padding:40px;
     width:100%;

@@ -22,10 +22,18 @@ const setsSlice = createSlice({
                 setToUpdate.checked = checked;
             }
         },
+        updateSetTime(state, action) {
+      const { setId, startTime, timer } = action.payload;
+      const set = state.sets.find((set) => set.setId === setId);
+      if (set) {
+        set.startTime = startTime;
+        set.timer = timer;
+      }
+    },
     }
 })
 
-export const { addSets, removeSet, updateSets } = setsSlice.actions;
+export const { addSets, removeSet, updateSets, updateSetTime } = setsSlice.actions;
 
 export const selectSets = (state) => state.sets.sets;
 

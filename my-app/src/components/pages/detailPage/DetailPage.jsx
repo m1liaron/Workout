@@ -70,11 +70,15 @@ const DetailPage = () => {
                                                     alignItems: 'center',
                                                     textAlign: 'center',
                                                     padding: '5px',
-                                                    marginBottom: '10px'
+                                                    marginBottom: '10px',
+                                                    justifyContent:'space-between'
                                                 }}>
+                                        <div style={{display:'flex'}}>
                                             <h1 style={{background: '#000', borderRadius: '100%', color: '#fff', padding: '0px 11px 1px 8px', fontSize: '2rem'}}>{index + 1}</h1>
                                             <span style={{margin: '0px 5px 0px 5px'}}> x </span>
                                             <h1>{set.repetitions}</h1>
+                                        </div>
+                                        <p>{set.timer > 0 ? formatTime(set.timer) : 0}</p>
                                     </li>
                                 ))}
                         </div>
