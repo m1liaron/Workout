@@ -1,7 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const storedWorkouts = JSON.parse(localStorage.getItem('workouts')) || [];
+
 const initialState = {
-    workouts: []
+    workouts: storedWorkouts,
 }
 
 const workoutsSlice = createSlice({
@@ -10,9 +12,11 @@ const workoutsSlice = createSlice({
     reducers: {
         addWorkout(state, action) {
             state.workouts = [...state.workouts, action.payload];
+            localStorage.setItem('workouts', JSON.stringify(state.workouts));
         },
         removeWorkout(state, action) {
             state.workouts = state.workouts.filter(item => item.id !== action.payload);
+            localStorage.setItem('workouts', JSON.stringify(state.workouts));
         }
     }
 })

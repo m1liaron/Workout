@@ -1,7 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const storedSets = JSON.parse(localStorage.getItem('sets')) || [];
+
 const initialState = {
-    sets: []
+    sets: storedSets
 }
 
 const setsSlice = createSlice({
@@ -10,10 +12,12 @@ const setsSlice = createSlice({
     reducers: {
         addSets(state, action) {
             state.sets = [...state.sets, action.payload];
+            localStorage.setItem('sets', JSON.stringify(state.sets));
         },
         removeSet(state, action) {
             const setIdToRemove = action.payload;
             state.sets = state.sets.filter(item => item.setId !== setIdToRemove);
+            localStorage.setItem('sets', JSON.stringify(state.sets));
         },
         updateSets: (state, action) => {
             const { setId, checked } = action.payload;
@@ -21,15 +25,17 @@ const setsSlice = createSlice({
             if (setToUpdate) {
                 setToUpdate.checked = checked;
             }
+            localStorage.setItem('sets', JSON.stringify(state.sets));
         },
         updateSetTime(state, action) {
-      const { setId, startTime, timer } = action.payload;
-      const set = state.sets.find((set) => set.setId === setId);
-      if (set) {
-        set.startTime = startTime;
-        set.timer = timer;
-      }
-    },
+            const { setId, startTime, timer } = action.payload;
+            const set = state.sets.find((set) => set.setId === setId);
+            if (set) {
+                set.startTime = startTime;
+                set.timer = timer;
+            }
+            localStorage.setItem('sets', JSON.stringify(state.sets));
+        },
     }
 })
 

@@ -1,14 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const storedHistory = JSON.parse(localStorage.getItem('history')) || [];
+
 const initialState = {
-    history: [
-        // {
-        // day:"29.07",
-        // time:7000400,
-        // startTime:"19:00",
-        // finishTime:"20:50"
-        // }
-    ]
+    history: storedHistory
 }
 
 const historySlice = createSlice({
@@ -17,6 +12,7 @@ const historySlice = createSlice({
     reducers: {
         addHistory(state, action) {
             state.history = [...state.history, action.payload];
+            localStorage.setItem('history', JSON.stringify(state.history));
         }
     }
 })

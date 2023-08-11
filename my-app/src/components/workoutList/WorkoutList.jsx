@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { addWorkout, selectWorkout } from "../../redux/workout/workoutSlice";
 import { useDispatch, useSelector } from 'react-redux';
 import Workout from "../workout/Workout";
@@ -10,16 +10,22 @@ const WorkoutList = () => {
   const [value, setValue] = useState('');
   const dispatch = useDispatch();
 
-  const handleAddWorkout = () => {
+const handleAddWorkout = () => {
     const newWorkout = {
       name: value === '' ? 'Нове тренування' : value,
       id: uuidv4()
     };
 
-    setValue('')
-    dispatch(addWorkout(newWorkout));
+
+  dispatch(addWorkout(newWorkout));
+
+    setValue('');
   };
 
+  useEffect(() => {
+    localStorage.setItem('workouts', JSON.stringify(workouts));
+  }, [workouts]);
+  
   return (
     <>
       <input
@@ -27,33 +33,29 @@ const WorkoutList = () => {
         placeholder="ім'я"
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        style={{marginBottom: '20px'}}
+        style={{ marginBottom: '20px' }}
         className="form-control"
       />
       <button
         onClick={handleAddWorkout}
         className="btn btn-primary"
-     >Додати тренування</button>
-      <UL
-        className="list-group"
       >
+        Додати тренування
+      </button>
+      <UL className="list-group">
         {workouts &&
-          workouts.map((workout) => {
-            return (
-              <>
-                <Workout
-                  key={workout.id}
-                  id={workout.id}
-                  name={workout.name}
-                  className="list-group-item"
-                />
-              </>
-            )
-          })
+          workouts.map((workout) => (
+            <Workout
+              key={workout.id}
+              id={workout.id}
+              name={workout.name}
+              className="list-group-item"
+            />
+          ))
         }
       </UL>
-    </>        
-  )
+    </>
+  );
 }
 
 export default WorkoutList;
