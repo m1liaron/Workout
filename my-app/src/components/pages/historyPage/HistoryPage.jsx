@@ -47,22 +47,31 @@ const HistoryPage = ({ setShowBar }) => {
     const row = [];
 
     for (let j = 0; j < 7; j++) {
-      if ((i === 0 && j < firstDayOfMonth) || dayCounter > daysInMonth) {
+        if ((i === 0 && j < firstDayOfMonth) || dayCounter > daysInMonth) {
         row.push(<td key={i + '-' + j} className="empty-cell"></td>);
-      } else {
+        } else {
         const isActive = day === dayCounter && month === curMonth && year === curYear;
+
+        // Check if the dayCounter matches any of the days in historiya
+        const isHistoryDay = historiya.some(historyEntry => {
+            const entryDay = parseInt(historyEntry.day.split('.')[0]);
+            return entryDay === dayCounter;
+        });
+
         row.push(
-          <td key={dayCounter} className={isActive ? 'active tracker' : 'tracker'}>
+            <td
+            key={dayCounter}
+            className={`tracker ${isActive ? 'active' : ''} ${isHistoryDay ? 'history-day' : ''}`}
+            >
             {dayCounter}
-          </td>
+            </td>
         );
         dayCounter++;
-      }
+        }
     }
 
     table.push(<tr key={i}>{row}</tr>);
-  }
-
+  } 
   const handleLeftArrowClick = () => {
     if (month === 0) {
       setMonth(11);
