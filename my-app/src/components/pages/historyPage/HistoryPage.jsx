@@ -14,8 +14,6 @@ const HistoryPage = ({ setShowBar }) => {
   const [isDisabled, setIsDisabled] = useState(false);
   const [count, setCount] = useState(0);
     
-  // console.log(historiya[historiya.length - 1].time)
-
   useEffect(() => {
     setYear(new Date().getFullYear());
   }, []);
@@ -52,10 +50,9 @@ const HistoryPage = ({ setShowBar }) => {
         } else {
         const isActive = day === dayCounter && month === curMonth && year === curYear;
 
-        // Check if the dayCounter matches any of the days in historiya
         const isHistoryDay = historiya.some(historyEntry => {
             const entryDay = parseInt(historyEntry.day.split('.')[0]);
-            return entryDay === dayCounter;
+            return entryDay === dayCounter && month === curMonth && year === curYear;
         });
 
         row.push(
@@ -116,6 +113,14 @@ const HistoryPage = ({ setShowBar }) => {
     setShowBar(false);
   });
 
+  const monthHistory = historiya.filter(historyEntry => {
+    const [entryDay, entryMonth] = historyEntry.day.split('.');
+    return parseInt(entryMonth) === month + 1;
+  });
+
+  const firstWorkout = monthHistory[0];
+  const lastWorkoutForMonth = monthHistory.length > 0 ? monthHistory[monthHistory.length - 1] : null;
+
   return (
         <>
             <h1 style={{display: 'table'}}>
@@ -148,13 +153,22 @@ const HistoryPage = ({ setShowBar }) => {
                 </thead>
           <tbody>{table}</tbody>
         </table>
-        
             </div>
-            <div style={{ background: '#fff', marginBottom: '20px' }}>
-                        <History
-                          month={months[month]}
-                        />
-            </div>
+      <div style={{ background: '#fff', marginBottom: '20px' }}>
+        <h2>Тренування: {months[month]}</h2>
+        {firstWorkout && lastWorkoutForMonth ? 
+          <div>
+                <p>
+                  {firstWorkout ? ` ${parseInt(firstWorkout.day.split('.')[0])} - ` : null} 
+                  {lastWorkoutForMonth ? ` ${parseInt(lastWorkoutForMonth.day.split('.')[0])}` : null}
+                </p>
+          </div>
+          : 'Немає'}
+              <History
+                month={month}
+                monthL={months[month]}
+              />
+          </div>
         </>
     )
 }

@@ -31,7 +31,7 @@ const WorkoutExerciseList = ({ workoutId, setShowBar }) => {
   const [finishTime, setFinishTime] = useState('');
   const [count, setCount] = useState(0);
   const [editWorkout, setEditWorkout] = useState(false);
-  const [changeName, setChangeName] = useState(false);
+  const [showInput, setShowInput] = useState(false);
   const dispatch = useDispatch();
 
   const selectedWorkout = workout.filter(item => item.id === workoutId);
@@ -46,6 +46,7 @@ const WorkoutExerciseList = ({ workoutId, setShowBar }) => {
     dispatch(addExercise(newExercise));
 
     setValue('');
+    setShowInput(false);
   };
 
   useEffect(() => {
@@ -71,8 +72,6 @@ const WorkoutExerciseList = ({ workoutId, setShowBar }) => {
       return e.timer;
     })
     
-    console.log(exDuration)
-
     const historyWorkout = {
       day: startDay,
       time: elapsedTime,
@@ -121,55 +120,47 @@ const WorkoutExerciseList = ({ workoutId, setShowBar }) => {
                 {/* <button onClick={() => setChangeName(true)}>Редагувати</button> */}
               </div>
               : null}
-                    <i class="fa-solid fa-ellipsis-vertical fa-2xl" style={{lineHeight: '0em'}} onClick={() => setEditWorkout(!editWorkout)}></i>
+                    <i className="fa-solid fa-ellipsis-vertical fa-2xl" style={{lineHeight: '0em'}} onClick={() => setEditWorkout(!editWorkout)}></i>
             </div>
           <h1 style={{ padding : '10px'}}>{selectedWorkout[0].name}</h1>
       </div> : null}
     <div>
         {start && !showFinished ? <Stopwatch start={start} elapsedTime={elapsedTime} setElapsedTime={setElapsedTime} /> : null}
       {change && exercises.length > 0 ?<p>режим розробки</p> : null}
-    {!start ? 
-    <div style={{display: 'flex', marginBottom:'10px', padding: '10px'}}>
-      <input
-        type="text"
-        placeholder="ім'я"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        className="form-control"
-    />
-    <button onClick={handleAddExercise} className="btn btn-primary">Додати вправу</button>
-    </div> 
-    : null
-    }
       <div>
-          {!showFinished ? 
-      <ul>
-        {exercises.length === 0 ? (
-          <h1 className="text-center">Нема поки що вправ</h1>
-        ) : (
-          exercises
-            .filter(exercise => {
-              return exercise.workoutId === workoutId;
-            })
-            .map((exercise) => (
-                <Exercise
-                  key={exercise.id}
-                  id={exercise.id}
-                  name={exercise.name}
-                  start={start}
-                change={change}
-                  className="my-3"
-                />
-            ))
-        )}
-      </ul>: null}
-          <div style={{...fixedDiv, right: start ? '10%' : '0%'}}>
+            {!showFinished ? 
+            <div style={{marginBottom: '180px'}}>
+                <ul>
+              {exercises.length === 0 ? (
+                <h1 className="text-center">Нема поки що вправ</h1>
+              ) : (
+                exercises
+                  .filter(exercise => {
+                    return exercise.workoutId === workoutId;
+                  })
+                  .map((exercise) => (
+                      <Exercise
+                        key={exercise.id}
+                        id={exercise.id}
+                        name={exercise.name}
+                        start={start}
+                      change={change}
+                        className="my-3"
+                      />
+                  ))
+              )}
+                </ul>
+                <button className='btn btn-primary' style={{width: '100%', fontSize: '30px'}} onClick={() => setShowInput(true)}>+ Додати вправу</button>
+            </div> : null
+            }
+          {showInput ? <AddExerciseInput value={value}  setValue={setValue} onSubmit={handleAddExercise}/> : null}
+          {!showInput ? <div style={{...fixedDiv, right: start ? '10%' : '0%', opacity: '0.8'}}>
             {!showFinished ? <button onClick={!start ? startWorkout : finishWorkout} className="btn btn-primary" style={{ fontSize: '2rem', width: '330px', marginBottom: '10px'}}>{start ? 'Закінчити' : 'Почати'}</button> : null}
             {!start ? 
             <button onClick={() => setChange(!change)} className="btn btn-secondary" style={{fontSize: '2rem', width: '330px' ,}}><i style={{fontSize: '1rem'}} class="fa-solid fa-pen fa-xs"></i> Редагувати</button>
               : null
           }
-          </div>
+          </div> : null}
       </div>
       </div>
       <div style={{background: '#fff'}}>
@@ -187,47 +178,40 @@ const WorkoutExerciseList = ({ workoutId, setShowBar }) => {
 export default WorkoutExerciseList;
 
 
-// const div = {
-//     position: 'fixed',
-//     top: '0',
-//     left:' 0',
-//     width: '100%',
-//     height: '100%',
-//     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-//     display: 'flex',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-// }
+const div = {
+    position: 'fixed',
+    top: '0',
+    left:' 0',
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+}
 
-// const content = {
-//     position: 'relative',
-//     maxWidth: '400px',
-//     backgroundColor: '#fff',
-//     padding: '20px',
-//     borderRadius: '8px',
-//     boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-//     top: '411px'
-// }
+const content = {
+    position: 'relative',
+    maxWidth: '400px',
+    backgroundColor: '#fff',
+    padding: '20px',
+    borderRadius: '8px',
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+    top: '391px'
+}
 
-// const ChangeWorkout = ({setActive, selectedWorkout}) => {
-//   const [value, setValue] = useState('');
-//   const dispatch = useDispatch();
-  
-//   const onSubmit = () => {
-//       dispatch(updateWorkoutName({ workoutId: selectedWorkout.id, newName: value }));
-//       setActive(false);
-//   };  
+const AddExerciseInput = ({value, onSubmit, setValue}) => {
 
-//   return (
-//     <>
-//       <div style={div}>
-//         <div style={content}>
-//           <div>
-//              <input style={{width: '100%'}} type="text" value={value} onChange={(e) => setValue(e.target.value)}/>
-//              <button type='submit' onClick={onSubmit}>Зберегти</button>
-//           </div>
-//         </div>
-//      </div>
-//     </>
-//   )
-// }
+  return (
+    <>
+      <div style={div}>
+        <div style={content}>
+          <div>
+             <input style={{width: '100%'}} type="text" value={value} onChange={(e) => setValue(e.target.value)}/>
+             <button type='submit' onClick={onSubmit}>Зберегти</button>
+          </div>
+        </div>
+     </div>
+    </>
+  )
+}

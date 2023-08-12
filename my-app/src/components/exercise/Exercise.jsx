@@ -185,7 +185,8 @@ const Exercise = ({ name, id, start, change}) => {
                                 textAlign: 'center',
                                 padding: '5px',
                                 marginBottom: '10px'
-                            }}>
+                            }}
+                            className={visSet && change ? 'swimming' : ''}>
                                 {start ? 
                                     <label className="checkbox-container">
                                         <input
@@ -218,7 +219,7 @@ const Exercise = ({ name, id, start, change}) => {
                                     />
                                     <p>повт.</p>
                                 </div>
-                                {set.timer ? formatTime(set.timer) : 0}
+                                {start ? set.timer ? formatTime(set.timer) : '00:00:00' : null}
                             </li>
                         ))}
                         <button onClick={handleAddSets} style={{width: '100%', marginTop: '10px'}} className="btn btn-primary">Add new</button>

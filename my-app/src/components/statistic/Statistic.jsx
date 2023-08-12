@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import { selectHistory } from '../../redux/history/historySlice';
 import History from '../history/History';
 import { Link } from 'react-router-dom';
-// import { StyledInput } from './Statistic.styled';
 
 const Statistic = ({ setShowBar }) => {
   const historiya = useSelector(selectHistory);
@@ -51,10 +50,9 @@ const Statistic = ({ setShowBar }) => {
         } else {
         const isActive = day === dayCounter && month === curMonth && year === curYear;
 
-        // Check if the dayCounter matches any of the days in historiya
         const isHistoryDay = historiya.some(historyEntry => {
             const entryDay = parseInt(historyEntry.day.split('.')[0]);
-            return entryDay === dayCounter;
+            return entryDay === dayCounter && month === curMonth && year === curYear;
         });
 
         row.push(
@@ -93,8 +91,6 @@ const Statistic = ({ setShowBar }) => {
     'Грудень',
   ];
 
-//   const allTime = timeAll.reduce((a, b) => a + b, 0);
-    
   const time = historiya.length === 0 ? '00:00:00' : formatTime(historiya[historiya.length - 1].time);
   const allTime = historiya.map(item => item.time).reduce((a, b) => a + b, 0);
 
@@ -133,7 +129,8 @@ const Statistic = ({ setShowBar }) => {
             <h1>Історія</h1>
         <div style={{ padding: '15px'}}>
           <History
-            month={months[month]}
+            monthL={months[month]}
+            month={month}
           />
         </div>
     </div>

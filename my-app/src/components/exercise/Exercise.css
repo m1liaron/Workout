@@ -24,17 +24,18 @@
     left: 0;
     height: 20px;
     width: 20px;
-    border-radius: 4px;
-    border: 2px solid #000;
+    border-radius: 57px;
     background-color: #fff;
   }
   
-  /* Checked state style */
+  .checkmark:hover{
+    background-color: #d4d4d4;
+  }
+  
   .checkbox-container input:checked ~ .checkmark {
     background-color: #73c073;
   }
   
-  /* Checkmark icon */
   .checkmark:after {
     content: "";
     position: absolute;
@@ -46,8 +47,8 @@
   }
   
   .checkbox-container .checkmark:after {
-    left: 6px;
-    top: 2px;
+    left: 8px;
+    top: 4px;
     width: 5px;
     height: 10px;
     border: solid white;
@@ -55,3 +56,22 @@
     transform: rotate(45deg);
   }
   
+
+    @keyframes swim {
+      0% {
+        transform: translateY(0);
+      }
+  
+      50% {
+        transform: translateY(10px);
+      }
+  
+      100% {
+        transform: translateY(0);
+      }
+    }
+  
+    .swimming {
+      animation: swim 0.5s 1;
+    }
+    
