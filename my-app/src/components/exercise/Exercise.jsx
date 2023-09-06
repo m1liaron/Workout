@@ -1,4 +1,4 @@
-import { removeExercise } from "../../redux/exercise/exerciseSlice";
+import { removeExercise, updateImg } from "../../redux/exercise/exerciseSlice";
 import { addSets, removeSet, selectSets, updateSets, updateSetTime } from "../../redux/sets/setsSlice";
 import { useDispatch, useSelector } from 'react-redux'; 
 import { useState, useEffect } from "react";
@@ -26,13 +26,7 @@ const Exercise = ({ name, id, start, change}) => {
     const [modalShow, setModalShow] = useState(false);
     const [dis, setDis] = useState(false);
     const [duration, setDuration] = useState(0);
-
-    // const handleImageChange = (event) => {
-    //     const file = event.target.files[0];
-    //     if (file) {
-    //         setSelectedImage(URL.createObjectURL(file)); // Set the selected image URL
-    //     }
-    // };
+    const [avatar, setAvatar] = useState(null);
 
     useEffect(() => {
         if (start) {
@@ -50,20 +44,32 @@ const Exercise = ({ name, id, start, change}) => {
 
     const renderImage = () => {
         if (selectedImage) {
-            return <img style={{ width: '90px' }} src={selectedImage} alt="Selected" />;
+            return (
+            <img
+                style={{ width: '100px', height: '100px' }}
+                src={selectedImage}
+                alt="Selected"
+            />
+            );
         } else {
             const initials = name ? name.charAt(0) : "?";
-            return <div style={{
-                width: '90px',
-                height: '90px',
+            return (
+            <div
+                style={{
+                width: '100px',
+                height: '100px',
                 borderRadius: '50%',
                 backgroundColor: 'rgb(203 203 203)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '24px',
-                fontWeight: 'bold'
-            }}>{initials}</div>;
+                fontSize: '25px', /* Adjust font size */
+                fontWeight: 'bold',
+                }}
+            >
+                {initials}
+            </div>
+            );
         }
     };
 
@@ -106,6 +112,14 @@ const Exercise = ({ name, id, start, change}) => {
       dispatch(updateSets({ setId, checked: updatedSets[setIndex].checked }));
     }
 
+    const handleImg = (setId, img) => {
+        const updateImg = {
+
+        }   
+        
+        dispatch(updateImg(updateImg));
+    }
+        
     if (!checked) {
       setModalShow(true);
       setDis(true);
@@ -132,6 +146,20 @@ const Exercise = ({ name, id, start, change}) => {
     }
   } ;
 
+   const handleFileChange = event => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = e => {
+      const imageSrc = e.target.result;
+      setSelectedImage(imageSrc);
+      setAvatar(imageSrc);
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  };
     return (
         <div style={{background: '#ffff', padding: '10px', marginBottom: '20px'}}>
         <div style={{
@@ -154,8 +182,14 @@ const Exercise = ({ name, id, start, change}) => {
                             : 
                             null
                         }
-                    {renderImage()}
-                    {/* <input type="file" onChange={handleImageChange} /> */}
+                        <div className="personal-image">
+                        <label className="label">
+                            <input type="file" onChange={handleFileChange} />
+                            <figure className="personal-figure">
+                                {renderImage()}
+                            </figure>
+                        </label>
+                        </div>
                 </div>
                 <div>
                     <h1>{name}</h1>

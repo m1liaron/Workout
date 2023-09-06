@@ -197,7 +197,7 @@ const content = {
     padding: '20px',
     borderRadius: '8px',
     boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-    top: '391px'
+    top: '267px'
 }
 
 const AddExerciseInput = ({value, onSubmit, setValue}) => {
