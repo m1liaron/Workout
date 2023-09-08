@@ -1,40 +1,88 @@
+import React from 'react';
+import {
+  ScatterChart,
+  Scatter,
+  XAxis,
+  YAxis,
+  ZAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from 'recharts';
 
-const Graph = () => {
-    const dataPoints = [
-        { x: 0, y: 0 },
-        { x: 1, y: 1 },
-        { x: 2, y: 4 },
-        { x: 3, y: 8 },
-        { x: 4, y: 16 },
-        { x: 5, y: 25 },
-      ];
-    
-      // Find the maximum values for x and y to calculate scaling
-      const maxX = Math.max(...dataPoints.map((point) => point.x));
-      const maxY = Math.max(...dataPoints.map((point) => point.y));
-    
-      // Calculate scaling factors to fit the graph within the container
-      const scaleX = 100 / maxX; // 100 is the width of the graph container
-      const scaleY = 100 / maxY; // 100 is the height of the graph container
-    
-      // Map the data points to create the line on the graph
-      const graphLine = dataPoints.map((point) => ({
-        x: point.x * scaleX,
-        y: 100 - point.y * scaleY,
-      }));
+const Graph = ({ time, exercise }) => {
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth() + 1;
+  const lastDayOfMonth = new Date(currentYear, currentMonth, 0).getDate();
 
-    return (
-        <>
-            <div className="graph-container">
-                <svg className="graph">
-                    <line x1="0" y1="0" x2="0" y2="100" className="axis" />
-                    <line x1="0" y1="100" x2="100" y2="100" className="axis" />
+  const exerciseData = [];
 
-                    <polyline points={graphLine.map((point) => `${point.x},${point.y}`).join(" ")} className="graph-line" />
-                </svg>
-            </div>
-        </>
-    )
-}
+const uniqueExercises = [...new Set(exercise.map((item) => item.name))];
+
+const colors = ['#FF5733', '#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+
+uniqueExercises.forEach((exerciseName, index) => {
+  const exerciseLine = [];
+
+  for (let day = 1; day <= lastDayOfMonth; day++) {
+    if (time[day - 1] !== undefined) {
+      exerciseLine.push({ x: day, y: Math.floor(time[day - 1] / 1000) });
+    }
+  }
+
+  console.log(exerciseLine)
+
+  exerciseData.push({
+    name: exerciseName,
+    data: exerciseLine,
+    fill: colors[index % colors.length],
+    line: true,
+    shape: "star",
+  });
+});
+
+// Функція, яка створює компоненти Scatter на основі даних
+const renderScatterComponents = () => {
+  return exerciseData.map((exercise) => (
+    <Scatter
+      key={exercise.name}
+      name={exercise.name}
+      data={exercise.data}
+      fill={exercise.fill}
+      line={exercise.line}
+      shape={exercise.shape}
+    />
+  ));
+};
+
+return (
+  <ResponsiveContainer width="100%" height={400}>
+    <ScatterChart
+      margin={{
+        top: 20,
+        right: 20,
+        bottom: 20,
+        left: 20,
+      }}
+    >
+      <CartesianGrid />
+      <XAxis
+        type="number"
+        dataKey="x"
+        name="час"
+        unit="д"
+        domain={['dataMin', 'dataMax']}
+      />
+      <YAxis type="number" dataKey="y" name="cек" unit="сек" />
+      <ZAxis type="number" range={[100]} />
+      <Tooltip cursor={{ strokeDasharray: '3 3' }} />
+      <Legend />
+      {renderScatterComponents()} {/* Викликаємо функцію для генерації компонентів */}
+    </ScatterChart>
+  </ResponsiveContainer>
+);
+};
 
 export default Graph;

@@ -8,7 +8,8 @@ import Exercise from '../exercise/Exercise';
 import Stopwatch from '../stopwatch/Stopwatch';
 import FinishWorkout from '../finishWorkout/FinishWorkout';
 import { Link } from 'react-router-dom';
-import { selectSets } from '../../redux/sets/setsSlice';
+import { selectSets, updateSets } from '../../redux/sets/setsSlice';
+import Modal from "../modal/Modal";
 
 const fixedDiv = {
     position: 'fixed',
@@ -33,6 +34,27 @@ const WorkoutExerciseList = ({ workoutId, setShowBar }) => {
   const [editWorkout, setEditWorkout] = useState(false);
   const [showInput, setShowInput] = useState(false);
   const dispatch = useDispatch();
+  const [showButton, setShowButton] = useState(false);
+  const [modalShow, setModalShow] = useState(false);
+
+  window.onscroll = function() {scrollFunction()};
+
+  function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+      setShowButton(true);
+    } else {
+      setShowButton(false);
+    }
+  }
+
+  const checkFirstUnchecked = () => {
+    const firstUncheckedSet = sets.find((set) => !set.checked);
+
+    if (firstUncheckedSet) {
+      setModalShow(true)
+      dispatch(updateSets({ setId: firstUncheckedSet.setId, checked: true }));
+    }
+  };
 
   const selectedWorkout = workout.filter(item => item.id === workoutId);
 
@@ -154,10 +176,11 @@ const WorkoutExerciseList = ({ workoutId, setShowBar }) => {
             </div> : null
             }
           {showInput ? <AddExerciseInput value={value}  setValue={setValue} onSubmit={handleAddExercise}/> : null}
-          {!showInput ? <div style={{...fixedDiv, right: start ? '10%' : '0%', opacity: '0.8'}}>
-            {!showFinished ? <button onClick={!start ? startWorkout : finishWorkout} className="btn btn-primary" style={{ fontSize: '2rem', width: '330px', marginBottom: '10px'}}>{start ? 'Закінчити' : 'Почати'}</button> : null}
+          {!showInput ? <div style={{...fixedDiv, right: start ? '5%' : '0%', opacity: '0.8'}}>
+            {!showFinished && !showButton ? <button onClick={!start ? startWorkout : checkFirstUnchecked} className="btn btn-primary" style={{ fontSize: '2rem', width: '330px', marginBottom: '10px'}}>{start ? 'Наступний підхід' : 'Почати'}</button> : null}
+            {showButton ? <button onClick={finishWorkout} style={{ fontSize: '2rem', width: '330px', marginBottom: '10px', marginLeft: '10px'}}>Закінчити</button> : null}
             {!start ? 
-            <button onClick={() => setChange(!change)} className="btn btn-secondary" style={{fontSize: '2rem', width: '330px' ,}}><i style={{fontSize: '1rem'}} class="fa-solid fa-pen fa-xs"></i> Редагувати</button>
+            <button onClick={() => setChange(!change)} style={{fontSize: '2rem', width: '330px' ,}}><i style={{fontSize: '1rem'}} class="fa-solid fa-pen fa-xs"></i> Редагувати</button>
               : null
           }
           </div> : null}
@@ -171,6 +194,7 @@ const WorkoutExerciseList = ({ workoutId, setShowBar }) => {
           <ChangeWorkout setActive={setChangeName} selectedWorkout={selectedWorkout} />
         : null} */}
       </div>
+      <Modal showModal={modalShow} closeModal={() => setModalShow(false)}/>
     </>
   );
 }

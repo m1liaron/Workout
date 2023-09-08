@@ -209,7 +209,9 @@ const Exercise = ({ name, id, start, change}) => {
                 <div>
                     <ul>
                         {filteredSets.map((set, index) => (
-                            <li key={set.id} style={{
+                            <div>
+                                {/* <div className="triangle-right" style={{position: 'absolute',left: '-20px'}}></div> */}
+                                <li key={set.id} style={{
                                 display: 'flex',
                                 justifyContent: 'space-around',
                                 color: set.checked && start ? '#fff' : '#000',
@@ -254,7 +256,8 @@ const Exercise = ({ name, id, start, change}) => {
                                     <p>повт.</p>
                                 </div>
                                 {start ? set.timer ? formatTime(set.timer) : '00:00:00' : null}
-                            </li>
+                                </li>
+                            </div>
                         ))}
                         <button onClick={handleAddSets} style={{width: '100%', marginTop: '10px'}} className="btn btn-primary">Add new</button>
                     </ul>
