@@ -85,7 +85,7 @@ const DetailPage = () => {
                     </div>
                 ))}
             </div>
-            <Graph/>
+            <Graph time={sets.map((set) => set.timer)} exercise={selectedExercises} />
         </>
     )
 }
