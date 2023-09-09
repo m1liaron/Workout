@@ -1,9 +1,8 @@
-import { removeExercise, updateImg } from "../../redux/exercise/exerciseSlice";
+import { removeExercise } from "../../redux/exercise/exerciseSlice";
 import { addSets, removeSet, selectSets, updateSets, updateSetTime } from "../../redux/sets/setsSlice";
 import { useDispatch, useSelector } from 'react-redux'; 
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from 'uuid';
-import { formatTime } from "../statistic/Statistic";
 import './Exercise.css'
 import Modal from "../modal/Modal";
 
@@ -90,16 +89,18 @@ const Exercise = ({ name, id, start, change}) => {
         setRep(rep + 1);
       };
 
-        const handleRemoveLastSet = () => {
-            if (filteredSets.length > 1) {
-                const lastSetId = filteredSets[filteredSets.length - 1].setId;
-                dispatch(removeSet(lastSetId));
-                if(rep >= 1){
-                    setRep(rep - 1);
-                } else {
-                    setRep(rep);
-                }
+      const handleRemoveLastSet = () => {
+        if (filteredSets.length > 1) {
+            const lastSetId = filteredSets[filteredSets.length - 1].setId;
+            dispatch(removeSet(lastSetId));
+            if (rep >= 1) {
+                setRep(rep - 1);
+            } else {
+                setRep(rep);
             }
+        } else {
+            alert("Ви не можете видалити останній підхід🙂");
+        }
     };
 
     const handleCheckboxChange = (setId, checked) => {
@@ -253,7 +254,6 @@ const Exercise = ({ name, id, start, change}) => {
                                     />
                                     <p>повт.</p>
                                 </div>
-                                {start ? set.timer ? formatTime(set.timer) : '00:00:00' : null}
                             </li>
                         ))}
                         <button onClick={handleAddSets} style={{width: '100%', marginTop: '10px'}} className="btn btn-primary">Add new</button>

@@ -126,11 +126,15 @@ const Statistic = ({ setShowBar }) => {
             </div>
           </Link>
             {/* <StyledInput type="date" value={value} onChange={handleDateChange} /> */}
-            <h1>Історія</h1>
-        <div style={{ padding: '15px'}}>
-          <History
+          <h1>Історія</h1>
+          <div style={{textAlign: 'right'}}>
+            <Link to='/history' style={{textDecoration: 'none'}}>Подивитись усю</Link>
+          </div>
+        <div>
+            <History
             monthL={months[month]}
             month={month}
+            lastHistoryEntry={historiya[historiya.length - 1]} 
           />
         </div>
     </div>

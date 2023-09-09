@@ -162,12 +162,12 @@ const HistoryPage = ({ setShowBar }) => {
                   {firstWorkout ? ` ${parseInt(firstWorkout.day.split('.')[0])} - ` : null} 
                   {lastWorkoutForMonth ? ` ${parseInt(lastWorkoutForMonth.day.split('.')[0])}` : null}
                 </p>
-          </div>
-          : 'Немає'}
-              <History
+                <History
                 month={month}
                 monthL={months[month]}
               />
+          </div>
+          : 'Немає'}
           </div>
         </>
     )

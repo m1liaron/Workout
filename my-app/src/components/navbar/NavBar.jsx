@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import './NavBar.css'
 
 const NavBar = () => {
     const txt = {
@@ -17,6 +18,8 @@ const NavBar = () => {
     }
 
     return (
+        <>
+        {/* <div class="box mask"><h1>Hello</h1></div> */}
         <div style={{
             position: 'fixed',
             bottom: '-62px',
@@ -30,11 +33,6 @@ const NavBar = () => {
             justifyContent: 'center',
             height: '103px',
         }}>
-            {/* <NavLink
-                style={({ isActive }) => ({ ...txt, color: isActive ? '#ffff' : txt.color })}
-                to='/'>
-                Home
-            </NavLink> */}
             <NavLink
                 style={({ isActive }) => ({ ...txt, color: isActive ? '#ffff' : txt.color, borderColor: isActive ? '#fff' : null })}
                 to='/'>
@@ -48,6 +46,8 @@ const NavBar = () => {
                 <i className="fa-solid fa-chart-line" ></i>
             </NavLink>
         </div>
+        </>
+
     )
 }
 

@@ -3,7 +3,7 @@ import { selectHistory } from "../../redux/history/historySlice";
 import { useSelector } from "react-redux";
 import { formatTime } from "../statistic/Statistic";
 
-const History = ({ month, monthL }) => {
+const History = ({ month, monthL, lastHistoryEntry  }) => {
   const history = useSelector(selectHistory);
 
   const monthHistory = history.filter(entry => {
@@ -11,9 +11,15 @@ const History = ({ month, monthL }) => {
     return parseInt(entryMonth) === month + 1;
   });
 
+  let historyEntriesToShow = history; 
+
+  if (lastHistoryEntry) {
+    historyEntriesToShow = [lastHistoryEntry];
+  }
+
   return (
     <>
-      {monthHistory.map((entry, index) => (
+      {historyEntriesToShow.map((entry, index) => (
         <Link key={index} to={`/history/detail/:${entry.id}`} style={{ color: '#000' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px', background: '#fff', padding: '10px' }}>
             <div>

@@ -1,0 +1,20 @@
+.box {
+    --size: 50px;
+    height: 200px;
+    margin: 5px;
+    border: 1px solid;
+    
+    background:
+      radial-gradient(var(--size) at 50% var(--size),blue 99%,#0000 101%) calc(50% - 2*var(--size)) 0/calc(4*var(--size)) 100% no-repeat,
+      radial-gradient(var(--size) at 50% 0px,#0000 99%,red 101%) 50% var(--size)/calc(4*var(--size)) 100% no-repeat;
+  }
+  .box + .box {
+    background-repeat: repeat-x;
+  }
+  .box.mask {
+    -webkit-mask:
+      radial-gradient(var(--size) at 50% var(--size),blue 99%,#0000 101%) calc(50% - 2*var(--size)) 0/calc(4*var(--size)) 100%,
+      radial-gradient(var(--size) at 50% 0px,#0000 99%,red 101%) 50% var(--size)/calc(4*var(--size)) 100% repeat-x;
+    background:linear-gradient(90deg,red,blue);  
+    border: none;
+  }
