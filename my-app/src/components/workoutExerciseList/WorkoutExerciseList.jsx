@@ -37,16 +37,24 @@ const WorkoutExerciseList = ({ workoutId, setShowBar }) => {
   const [showButton, setShowButton] = useState(false);
   const [modalShow, setModalShow] = useState(false);
 
-  window.onscroll = function() {scrollFunction()};
-
-  function scrollFunction() {
-    if (document.body.scrollTop > 20 && start || document.documentElement.scrollTop > 20 && start) {
-      setShowButton(true);
-    } else {
-      setShowButton(false);
-    }
-  }
-
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + window.scrollY >= document.body.offsetHeight &&
+        start
+      ) {
+        setShowButton(true);
+      } else {
+        setShowButton(false);
+      }
+    };
+  
+    window.addEventListener('scroll', handleScroll);
+  
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [start]);
   const checkFirstUnchecked = () => {
     const firstUncheckedSet = sets.find((set) => !set.checked);
 
@@ -176,7 +184,7 @@ const WorkoutExerciseList = ({ workoutId, setShowBar }) => {
             </div> : null
             }
           {showInput ? <AddExerciseInput value={value}  setValue={setValue} onSubmit={handleAddExercise}/> : null}
-          {!showInput ? <div style={{...fixedDiv, right: start ? '5%' : '0%', opacity: '0.8'}}>
+          {!showInput ? <div style={{...fixedDiv, right: start ? '8%' : '0%', top: start ? '845px' : '', opacity: '0.8'}}>
             {!showFinished && !showButton ? <button onClick={!start ? startWorkout : checkFirstUnchecked} className="btn btn-primary" style={{ fontSize: '2rem', width: '330px', marginBottom: '10px'}}>{start ? 'Наступний підхід' : 'Почати'}</button> : null}
             {showButton ? <button onClick={finishWorkout} style={{ fontSize: '2rem', width: '330px', marginBottom: '10px', marginLeft: '10px'}}>Закінчити</button> : null}
             {!start ? 

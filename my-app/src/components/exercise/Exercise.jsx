@@ -194,7 +194,7 @@ const Exercise = ({ name, id, start, change}) => {
                 </div>
                 <div>
                     <h1>{name}</h1>
-                    <p>{rep} повт. по {value} раз</p>
+                    <p>{rep.length === 1 ? rep + 1 : rep} повт. по {value} раз</p>
                </div>
             </div>
             { activeMode ? 
